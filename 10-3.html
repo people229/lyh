@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视口变化与 rem</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .viewport-box {
+            display: grid;
+            min-height: 100vh;
+            min-height: 100svh;
+            place-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background-color: #216869;
+            color: #fff;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 4rem;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 900px) {
+            html {
+                font-size: 14px;
+            }
+
+            .viewport-box {
+                background-color: #a34e24;
+            }
+        }
+
+        @media (max-width: 600px) {
+            html {
+                font-size: 12px;
+            }
+
+            .viewport-box {
+                background-color: #315c91;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="viewport-box">
+        <h1>梁月虹</h1>
+        <p>改变视口大小，背景颜色与文字大小随之变化</p>
+    </main>
+</body>
+</html>

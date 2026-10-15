@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梁月虹 - Web 前端的长度单位</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background: #eef1f7;
+            color: #24324a;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .liang_page {
+            width: min(100%, 1120px);
+            margin: 0 auto;
+            padding: 40px 24px 70px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .liang_description {
+            margin: 0 0 10px;
+            color: #5d6c89;
+            font-size: 16px;
+        }
+
+        .liang_tip {
+            margin: 0 0 28px;
+            padding: 10px 14px;
+            border-left: 4px solid #3b6cf5;
+            background: rgba(59, 108, 245, 0.08);
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+            color: #244fc5;
+        }
+
+        section {
+            margin-top: 34px;
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: 22px;
+        }
+
+        h3 {
+            margin: 24px 0 12px;
+            font-size: 17px;
+        }
+
+        .liang_unit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .liang_unit {
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 10px 24px rgba(36, 79, 197, 0.08);
+        }
+
+        .liang_unit code {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(59, 108, 245, 0.1);
+            color: #244fc5;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .liang_unit p {
+            margin: 10px 0 12px;
+            font-size: 14px;
+            color: #5d6c89;
+            line-height: 1.6;
+        }
+
+        .liang_bar {
+            height: 18px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #3b6cf5, #7aa0ff);
+        }
+
+        .liang_unit .liang_value {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #8a97b3;
+        }
+
+        .liang_equal-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 24px;
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .liang_equal-item {
+            flex: 1 1 220px;
+        }
+
+        .liang_equal-item .liang_label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #5d6c89;
+        }
+
+        .liang_equal-item .liang_bar {
+            background: #ffb454;
+        }
+
+        .liang_compare {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .liang_compare-item {
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .liang_compare-item h4 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .liang_compare-item h4 code {
+            color: #244fc5;
+        }
+
+        .liang_em-parent {
+            font-size: 24px;
+            padding: 12px;
+            background: #f3f7ff;
+            border: 1px dashed #3b6cf5;
+            border-radius: 8px;
+        }
+
+        .liang_em-parent span {
+            display: block;
+            font-size: 14px;
+            color: #5d6c89;
+        }
+
+        .liang_em-child {
+            width: 8em;
+            max-width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: #d5ed9b;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .liang_rem-box {
+            width: 12rem;
+            max-width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: #9bbde5;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .liang_viewport-demo {
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .liang_viewport-demo p {
+            margin: 0 0 12px;
+            font-size: 14px;
+            color: #5d6c89;
+        }
+
+        .liang_vw-bar {
+            height: 18px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            background: #8fd1c4;
+        }
+
+        .liang_vw-25 { width: 25vw; }
+        .liang_vw-50 { width: 50vw; max-width: 100%; }
+
+        .liang_vh-box {
+            display: grid;
+            place-items: center;
+            width: 100%;
+            height: 15vh;
+            min-height: 80px;
+            border-radius: 6px;
+            background: #f1d273;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(36, 79, 197, 0.08);
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(59, 108, 245, 0.12);
+            text-align: left;
+        }
+
+        th {
+            background: #3b6cf5;
+            color: #fff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td code {
+            color: #244fc5;
+            font-weight: 700;
+        }
+
+        @media (max-width: 900px) {
+            .liang_unit-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .liang_page {
+                padding: 28px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .liang_unit-grid,
+            .liang_compare {
+                grid-template-columns: 1fr;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="liang_page">
+        <h1>Web 前端的长度单位</h1>
+        <p class="liang_description">
+            CSS 中的长度单位分为绝对单位和相对单位。绝对单位有固定的物理长度，
+            相对单位则依赖参照物（父元素、根元素或视口），是响应式布局的基础。
+        </p>
+        <p class="liang_tip">
+            浏览器标准：1in = 96px。屏幕上的物理单位（cm、mm、pt）由浏览器按此标准换算，可能存在微小误差。
+        </p>
+
+        <section aria-label="绝对单位">
+            <h2>一、绝对单位（Absolute Units）</h2>
+            <div class="liang_unit-grid">
+                <div class="liang_unit">
+                    <code>px</code>
+                    <p>像素。屏幕上最小的显示单位，最常用，不随环境变化。</p>
+                    <div class="liang_bar" style="width: 96px"></div>
+                    <span class="liang_value">示例：width: 96px</span>
+                </div>
+                <div class="liang_unit">
+                    <code>in</code>
+                    <p>英寸。1in = 96px = 2.54cm，常用于打印场景。</p>
+                    <div class="liang_bar" style="width: 1in"></div>
+                    <span class="liang_value">示例：width: 1in（96px）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>cm</code>
+                    <p>厘米。1cm ≈ 37.8px，屏幕显示为近似值。</p>
+                    <div class="liang_bar" style="width: 2.54cm"></div>
+                    <span class="liang_value">示例：width: 2.54cm（≈96px）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>mm</code>
+                    <p>毫米。1mm ≈ 3.78px，1cm = 10mm。</p>
+                    <div class="liang_bar" style="width: 25.4mm"></div>
+                    <span class="liang_value">示例：width: 25.4mm（≈96px）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>pt</code>
+                    <p>磅（点）。印刷常用，1pt = 1/72 in ≈ 1.33px。</p>
+                    <div class="liang_bar" style="width: 72pt"></div>
+                    <span class="liang_value">示例：width: 72pt（=96px）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>pc</code>
+                    <p>派卡。1pc = 12pt = 16px，源于活字印刷。</p>
+                    <div class="liang_bar" style="width: 6pc"></div>
+                    <span class="liang_value">示例：width: 6pc（=96px）</span>
+                </div>
+            </div>
+
+            <h3>直观对比：下列六个盒子宽度完全相等（均为 96px）</h3>
+            <div class="liang_equal-row">
+                <div class="liang_equal-item">
+                    <span class="liang_label">width: 96px</span>
+                    <div class="liang_bar" style="width: 96px"></div>
+                </div>
+                <div class="liang_equal-item">
+                    <span class="liang_label">width: 1in</span>
+                    <div class="liang_bar" style="width: 1in"></div>
+                </div>
+                <div class="liang_equal-item">
+                    <span class="liang_label">width: 2.54cm</span>
+                    <div class="liang_bar" style="width: 2.54cm"></div>
+                </div>
+                <div class="liang_equal-item">
+                    <span class="liang_label">width: 25.4mm</span>
+                    <div class="liang_bar" style="width: 25.4mm"></div>
+                </div>
+                <div class="liang_equal-item">
+                    <span class="liang_label">width: 72pt</span>
+                    <div class="liang_bar" style="width: 72pt"></div>
+                </div>
+                <div class="liang_equal-item">
+                    <span class="liang_label">width: 6pc</span>
+                    <div class="liang_bar" style="width: 6pc"></div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="相对单位">
+            <h2>二、相对单位（Relative Units）</h2>
+            <div class="liang_unit-grid">
+                <div class="liang_unit">
+                    <code>%</code>
+                    <p>相对父元素的尺寸。宽度百分比基于父宽，高度百分比基于父高。</p>
+                    <div class="liang_bar" style="width: 50%"></div>
+                    <span class="liang_value">示例：width: 50%（父元素的一半）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>em</code>
+                    <p>相对当前元素的 font-size。元素嵌套时会层层叠加计算。</p>
+                    <div class="liang_bar" style="width: 8em"></div>
+                    <span class="liang_value">示例：width: 8em（随字体放大）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>rem</code>
+                    <p>相对根元素（html）的 font-size，默认 16px，不随父级叠加。</p>
+                    <div class="liang_bar" style="width: 12rem; max-width: 100%"></div>
+                    <span class="liang_value">示例：width: 12rem（16px × 12）</span>
+                </div>
+                <div class="liang_unit">
+                    <code>ex</code>
+                    <p>相对当前字体小写字母 x 的高度，适合按字高排版。</p>
+                    <div class="liang_bar" style="width: 10ex"></div>
+                    <span class="liang_value">示例：width: 10ex</span>
+                </div>
+                <div class="liang_unit">
+                    <code>ch</code>
+                    <p>相对数字“0”的宽度，适合控制每行字符数。</p>
+                    <div class="liang_bar" style="width: 10ch"></div>
+                    <span class="liang_value">示例：width: 10ch</span>
+                </div>
+                <div class="liang_unit">
+                    <code>% / auto</code>
+                    <p>流式布局中配合 % 使用，可实现随窗口伸缩的弹性盒子。</p>
+                    <div class="liang_bar" style="width: 75%"></div>
+                    <span class="liang_value">示例：width: 75%</span>
+                </div>
+                <div class="liang_unit">
+                    <code>vw</code>
+                    <p>视口（viewport）宽度的 1%，100vw = 视口总宽。</p>
+                    <div class="liang_bar" style="width: 30vw"></div>
+                    <span class="liang_value">示例：width: 30vw</span>
+                </div>
+                <div class="liang_unit">
+                    <code>vh</code>
+                    <p>视口高度的 1%，100vh = 视口总高，常用于整屏布局。</p>
+                    <div class="liang_bar" style="width: 60vw; max-width: 100%"></div>
+                    <span class="liang_value">演示见下方 vh 盒子</span>
+                </div>
+                <div class="liang_unit">
+                    <code>vmin / vmax</code>
+                    <p>vmin 取 vw/vh 中较小者，vmax 取较大者，适配横竖屏。</p>
+                    <div class="liang_bar" style="width: 20vmin"></div>
+                    <span class="liang_value">示例：width: 20vmin</span>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="em 与 rem 对比">
+            <h2>三、em 与 rem 的区别</h2>
+            <div class="liang_compare">
+                <div class="liang_compare-item">
+                    <h4><code>em</code>：相对<b>父元素</b>字体大小</h4>
+                    <div class="liang_em-parent">
+                        父元素 font-size: 24px
+                        <span>子盒子 width: 8em = 24px × 8 = 192px</span>
+                        <div class="liang_em-child">width: 8em（≈192px）</div>
+                    </div>
+                </div>
+                <div class="liang_compare-item">
+                    <h4><code>rem</code>：相对<b>根元素</b>字体大小</h4>
+                    <div class="liang_em-parent">
+                        同样的父元素 font-size: 24px
+                        <span>子盒子 width: 12rem = 16px × 12 = 192px</span>
+                        <div class="liang_rem-box">width: 12rem（192px，与父级字体无关）</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="视口单位演示">
+            <h2>四、视口单位演示（拖动窗口观察变化）</h2>
+            <div class="liang_viewport-demo">
+                <p>width: 25vw（视口宽度的四分之一）：</p>
+                <div class="liang_vw-bar liang_vw-25"></div>
+                <p>width: 50vw（视口宽度的一半）：</p>
+                <div class="liang_vw-bar liang_vw-50"></div>
+                <p>height: 15vh（视口高度的 15%）：</p>
+                <div class="liang_vh-box">height: 15vh</div>
+            </div>
+        </section>
+
+        <section aria-label="单位换算表">
+            <h2>五、常用换算表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>单位</th>
+                        <th>类别</th>
+                        <th>换算关系</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>px</code></td>
+                        <td>绝对</td>
+                        <td>1in = 96px（基准单位）</td>
+                    </tr>
+                    <tr>
+                        <td><code>pt</code></td>
+                        <td>绝对</td>
+                        <td>1pt = 1/72 in ≈ 1.33px</td>
+                    </tr>
+                    <tr>
+                        <td><code>pc</code></td>
+                        <td>绝对</td>
+                        <td>1pc = 12pt = 16px</td>
+                    </tr>
+                    <tr>
+                        <td><code>cm</code> / <code>mm</code></td>
+                        <td>绝对</td>
+                        <td>1cm ≈ 37.8px，1mm ≈ 3.78px</td>
+                    </tr>
+                    <tr>
+                        <td><code>em</code> / <code>rem</code></td>
+                        <td>相对</td>
+                        <td>em 相对当前/父级字体，rem 相对根字体（默认 16px）</td>
+                    </tr>
+                    <tr>
+                        <td><code>vw</code> / <code>vh</code></td>
+                        <td>相对</td>
+                        <td>分别为视口宽、高的 1%</td>
+                    </tr>
+                    <tr>
+                        <td><code>vmin</code> / <code>vmax</code></td>
+                        <td>相对</td>
+                        <td>vw 与 vh 的较小值 / 较大值</td>
+                    </tr>
+                    <tr>
+                        <td><code>ex</code> / <code>ch</code></td>
+                        <td>相对</td>
+                        <td>相对字形 x 高度 / 数字 0 的宽度</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

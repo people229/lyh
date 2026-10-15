@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梁月虹 - Media Query 布局</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background: #eef2ed;
+            color: #183f45;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .page {
+            width: min(100%, 1120px);
+            min-width: 320px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .description {
+            margin: 0 0 24px;
+            color: #536b67;
+            font-size: 16px;
+        }
+
+        .box-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .box {
+            display: grid;
+            min-height: 132px;
+            place-items: center;
+            border-radius: 6px;
+            color: #183f45;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .box:nth-child(1) { background: #d5ed9b; }
+        .box:nth-child(2) { background: #f4b091; }
+        .box:nth-child(3) { background: #8fd1c4; }
+        .box:nth-child(4) { background: #f1d273; }
+        .box:nth-child(5) { background: #9bbde5; }
+        .box:nth-child(6) { background: #e6a7a0; }
+        .box:nth-child(7) { background: #a6d2a1; }
+        .box:nth-child(8) { background: #efbc78; }
+
+        @media (max-width: 1000px) {
+            .box-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 680px) {
+            .page {
+                padding: 28px 16px;
+            }
+
+            .box-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .box-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <h1>梁月虹</h1>
+        <p class="description">调整视口宽度，观察每行盒子数量的变化</p>
+        <section class="box-grid" aria-label="响应式盒子布局">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+            <div class="box">5</div>
+            <div class="box">6</div>
+            <div class="box">7</div>
+            <div class="box">8</div>
+        </section>
+    </main>
+</body>
+</html>

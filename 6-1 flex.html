@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .flex{
+            /*容器*/
+            display: flex;
+            /*子元素在一行显示*/
+            flex-wrap: wrap;
+        }
+        .flex li{
+            /*float: left;*/
+            border: 1px solid #333;
+            width: 20%;
+            line-height: 100px;
+            list-style: none;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+        }
+        .flex li:nth-child(1){
+            align-items: center;
+            /*水平居中*/
+            justify-content: center;
+        }
+        .box{
+            width: 50px;
+            height: 50px;
+            background-color: #f1f2f3;
+        }
+        .flex li:nth-child(1) .box{
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>梁月虹 flex</h2>
+    <ul class="flex">
+        <li>
+            <div class="box"></div>
+        </li>
+        <li>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </li>
+        <li></li>
+        <li></li>
+    </ul>
+</body>
+</html>

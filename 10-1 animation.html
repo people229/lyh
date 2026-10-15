@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CSS 背景色动画</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			min-height: 100vh;
+			margin: 0;
+			display: grid;
+			place-items: center;
+			background: #f4f4f0;
+		}
+
+		.color-box {
+			width: 220px;
+			height: 160px;
+			border-radius: 12px;
+			animation: color-change 8s ease-in-out infinite;
+		}
+
+		@keyframes color-change {
+			0%, 100% { background-color: #e74c3c; }
+			25% { background-color: #f1c40f; }
+			50% { background-color: #3498db; }
+			75% { background-color: #2ecc71; }
+		}
+	</style>
+</head>
+<body>
+	<div class="color-box" role="img" aria-label="背景颜色在红、黄、蓝、绿之间循环变化"></div>
+</body>
+</html>

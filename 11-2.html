@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梁月虹 - CSS3 3D 动画</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background: #141a2e;
+            color: #e8ecf8;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .liang_page {
+            width: min(100%, 1120px);
+            margin: 0 auto;
+            padding: 40px 24px 70px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .liang_description {
+            margin: 0 0 10px;
+            color: #9aa6c9;
+            font-size: 16px;
+        }
+
+        .liang_tip {
+            margin: 0 0 28px;
+            padding: 10px 14px;
+            border-left: 4px solid #6c8cff;
+            background: rgba(108, 140, 255, 0.12);
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+            color: #aebdff;
+            line-height: 1.7;
+        }
+
+        section {
+            margin-top: 40px;
+        }
+
+        h2 {
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+        .liang_section-desc {
+            margin: 0 0 16px;
+            font-size: 14px;
+            color: #9aa6c9;
+        }
+
+        .liang_demo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .liang_demo-card {
+            background: #1d2542;
+            border: 1px solid rgba(108, 140, 255, 0.25);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .liang_demo-card h3 {
+            margin: 0 0 6px;
+            font-size: 16px;
+        }
+
+        .liang_demo-card h3 code {
+            color: #8fa8ff;
+        }
+
+        .liang_demo-card p {
+            margin: 0 0 14px;
+            font-size: 13px;
+            color: #9aa6c9;
+            line-height: 1.6;
+        }
+
+        .liang_stage {
+            display: grid;
+            place-items: center;
+            height: 190px;
+            background: radial-gradient(circle at 50% 40%, #27315c, #161d38);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .liang_plane {
+            width: 110px;
+            height: 110px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6c8cff, #38d0c6);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+            display: grid;
+            place-items: start start;
+            color: #0f1430;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 8px;
+        }
+
+        .liang_plane::after {
+            content: "▲";
+            align-self: end;
+            justify-self: end;
+            font-size: 20px;
+        }
+
+        .liang_anim-x {
+            animation: liang_around-x 4s linear infinite;
+        }
+
+        .liang_anim-y {
+            animation: liang_around-y 4s linear infinite;
+        }
+
+        .liang_anim-z {
+            animation: liang_around-z 4s linear infinite;
+        }
+
+        @keyframes liang_around-x {
+            from { transform: rotateX(0deg); }
+            to { transform: rotateX(360deg); }
+        }
+
+        @keyframes liang_around-y {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        @keyframes liang_around-z {
+            from { transform: rotateZ(0deg); }
+            to { transform: rotateZ(360deg); }
+        }
+
+        .liang_cube-wrap {
+            perspective: 700px;
+        }
+
+        .liang_cube {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            animation: liang_cube-spin 9s linear infinite;
+        }
+
+        .liang_face {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.55);
+            border-radius: 6px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #10162e;
+            opacity: 0.92;
+        }
+
+        .liang_face-front  { background: #6c8cff; transform: rotateY(0deg) translateZ(75px); }
+        .liang_face-back   { background: #38d0c6; transform: rotateY(180deg) translateZ(75px); }
+        .liang_face-right  { background: #ffb454; transform: rotateY(90deg) translateZ(75px); }
+        .liang_face-left   { background: #ff8f9e; transform: rotateY(-90deg) translateZ(75px); }
+        .liang_face-top    { background: #b7e36c; transform: rotateX(90deg) translateZ(75px); }
+        .liang_face-bottom { background: #c39bff; transform: rotateX(-90deg) translateZ(75px); }
+
+        @keyframes liang_cube-spin {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to   { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        .liang_flip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .liang_flip-card {
+            width: 280px;
+            height: 180px;
+            perspective: 800px;
+            cursor: pointer;
+        }
+
+        .liang_flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+
+        .liang_flip-card:hover .liang_flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .liang_flip-face {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            backface-visibility: hidden;
+            font-size: 17px;
+            font-weight: 700;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .liang_flip-front {
+            background: linear-gradient(135deg, #6c8cff, #8f6cff);
+            color: #fff;
+        }
+
+        .liang_flip-back {
+            background: linear-gradient(135deg, #38d0c6, #b7e36c);
+            color: #10162e;
+            transform: rotateY(180deg);
+        }
+
+        .liang_flip-note {
+            max-width: 360px;
+            font-size: 14px;
+            color: #9aa6c9;
+            line-height: 1.8;
+        }
+
+        .liang_flip-note code {
+            color: #8fa8ff;
+        }
+
+        .liang_compare {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .liang_compare-card {
+            background: #1d2542;
+            border: 1px solid rgba(108, 140, 255, 0.25);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .liang_compare-card h3 {
+            margin: 0 0 6px;
+            font-size: 16px;
+        }
+
+        .liang_compare-card p {
+            margin: 0 0 14px;
+            font-size: 13px;
+            color: #9aa6c9;
+        }
+
+        .liang_persp-on {
+            perspective: 600px;
+        }
+
+        .liang_spin-y {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ffb454, #ff8f9e);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: #2a1520;
+            animation: liang_around-y 3.5s linear infinite;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1d2542;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(108, 140, 255, 0.18);
+            text-align: left;
+        }
+
+        th {
+            background: #3b6cf5;
+            color: #fff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td code {
+            color: #8fa8ff;
+            font-weight: 700;
+        }
+
+        @media (max-width: 900px) {
+            .liang_demo-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .liang_page {
+                padding: 28px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .liang_demo-grid,
+            .liang_compare {
+                grid-template-columns: 1fr;
+            }
+
+            .liang_flip-card {
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="liang_page">
+        <h1>CSS3 3D 动画</h1>
+        <p class="liang_description">
+            CSS3 通过三维变换（3D Transform）与动画（Animation）结合，在不依赖 JavaScript 的情况下
+            制作出立方体旋转、卡片翻转等立体效果。
+        </p>
+        <p class="liang_tip">
+            三个核心属性：<code>perspective</code>（透视，给父容器设置观察距离）、
+            <code>transform-style: preserve-3d</code>（让子元素保留 3D 空间）、
+            <code>backface-visibility: hidden</code>（隐藏背面，翻转卡片必备）。
+        </p>
+
+        <section aria-label="三轴旋转">
+            <h2>一、三个坐标轴的旋转</h2>
+            <p class="liang_section-desc">平面内的三角形标记用于观察旋转方向，动画由 @keyframes 驱动。</p>
+            <div class="liang_demo-grid">
+                <div class="liang_demo-card">
+                    <h3><code>rotateX</code></h3>
+                    <p>绕水平轴（X 轴）上下翻转</p>
+                    <div class="liang_stage">
+                        <div class="liang_plane liang_anim-x">X</div>
+                    </div>
+                </div>
+                <div class="liang_demo-card">
+                    <h3><code>rotateY</code></h3>
+                    <p>绕垂直轴（Y 轴）左右翻转</p>
+                    <div class="liang_stage">
+                        <div class="liang_plane liang_anim-y">Y</div>
+                    </div>
+                </div>
+                <div class="liang_demo-card">
+                    <h3><code>rotateZ</code></h3>
+                    <p>绕 Z 轴平面内旋转（等同 rotate）</p>
+                    <div class="liang_stage">
+                        <div class="liang_plane liang_anim-z">Z</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="旋转立方体">
+            <h2>二、3D 立方体</h2>
+            <p class="liang_section-desc">
+                六个面各自 <code>translateZ</code> 推出立体空间，容器开启 preserve-3d 并由动画同时旋转 X、Y 轴。
+            </p>
+            <div class="liang_demo-card">
+                <div class="liang_stage liang_cube-wrap">
+                    <div class="liang_cube">
+                        <div class="liang_face liang_face-front">前</div>
+                        <div class="liang_face liang_face-back">后</div>
+                        <div class="liang_face liang_face-right">右</div>
+                        <div class="liang_face liang_face-left">左</div>
+                        <div class="liang_face liang_face-top">上</div>
+                        <div class="liang_face liang_face-bottom">下</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="翻转卡片">
+            <h2>三、双面翻转卡片</h2>
+            <p class="liang_section-desc">正面与背面各占一层，背面预旋转 180°，hover 时整体 rotateY(180deg)。</p>
+            <div class="liang_flip-row">
+                <div class="liang_flip-card">
+                    <div class="liang_flip-inner">
+                        <div class="liang_flip-face liang_flip-front">鼠标悬停 · 查看背面</div>
+                        <div class="liang_flip-face liang_flip-back">背面：backface-visibility: hidden</div>
+                    </div>
+                </div>
+                <div class="liang_flip-note">
+                    实现要点：<br>
+                    1. 外层容器设置 <code>perspective</code> 产生近大远小；<br>
+                    2. 内层设置 <code>transform-style: preserve-3d</code>；<br>
+                    3. 两个面绝对定位重叠，背面 <code>transform: rotateY(180deg)</code>；<br>
+                    4. 面上设置 <code>backface-visibility: hidden</code>，否则翻转时会看到镜像。
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="透视对比">
+            <h2>四、perspective 的作用</h2>
+            <p class="liang_section-desc">同样的 rotateY 动画，左侧有透视（近大远小），右侧无透视（看起来只是横向压扁）。</p>
+            <div class="liang_compare">
+                <div class="liang_compare-card">
+                    <h3>有 perspective: 600px</h3>
+                    <p>父容器设置透视距离</p>
+                    <div class="liang_persp-on">
+                        <div class="liang_spin-y">3D</div>
+                    </div>
+                </div>
+                <div class="liang_compare-card">
+                    <h3>无 perspective</h3>
+                    <p>缺少透视，立体感消失</p>
+                    <div>
+                        <div class="liang_spin-y">2D</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="属性速查表">
+            <h2>五、3D 属性速查表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>属性 / 函数</th>
+                        <th>作用</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>perspective()</code></td>
+                        <td>透视</td>
+                        <td>写在 transform 中，只影响当前元素</td>
+                    </tr>
+                    <tr>
+                        <td><code>perspective</code></td>
+                        <td>透视</td>
+                        <td>写在父容器上，影响所有子元素</td>
+                    </tr>
+                    <tr>
+                        <td><code>transform-style</code></td>
+                        <td>3D 空间</td>
+                        <td>取值 preserve-3d 时子元素保留立体效果</td>
+                    </tr>
+                    <tr>
+                        <td><code>transform-origin</code></td>
+                        <td>变换原点</td>
+                        <td>默认 50% 50% 0（元素中心）</td>
+                    </tr>
+                    <tr>
+                        <td><code>backface-visibility</code></td>
+                        <td>背面</td>
+                        <td>hidden 时旋转后看不到背面内容</td>
+                    </tr>
+                    <tr>
+                        <td><code>rotate3d / translate3d / scale3d</code></td>
+                        <td>三维函数</td>
+                        <td>分别在 X、Y、Z 三个轴上变换</td>
+                    </tr>
+                    <tr>
+                        <td><code>translateZ(n)</code></td>
+                        <td>Z 轴位移</td>
+                        <td>正值朝向观察者，立方体的“厚度”由此而来</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
