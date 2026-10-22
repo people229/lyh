@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梁月虹 - Lucide 图标（SVG 方式）</title>
+    <script src="./cdn/lucide.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background: #101a18;
+            color: #e6f2ee;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .liang_page {
+            width: min(100%, 1120px);
+            margin: 0 auto;
+            padding: 40px 24px 70px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .liang_description {
+            margin: 0 0 10px;
+            color: #93b3aa;
+            font-size: 16px;
+        }
+
+        .liang_tip {
+            margin: 0 0 28px;
+            padding: 10px 14px;
+            border-left: 4px solid #38d0a0;
+            background: rgba(56, 208, 160, 0.12);
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+            color: #8fe3c8;
+            line-height: 1.7;
+        }
+
+        section {
+            margin-top: 40px;
+        }
+
+        h2 {
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+        .liang_section-desc {
+            margin: 0 0 16px;
+            font-size: 14px;
+            color: #93b3aa;
+        }
+
+        .liang_icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px;
+        }
+
+        .liang_icon-card {
+            background: #16241f;
+            border: 1px solid rgba(143, 227, 200, 0.2);
+            border-radius: 12px;
+            padding: 18px 12px 14px;
+            text-align: center;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .liang_icon-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 208, 160, 0.6);
+            background: #1b2d26;
+        }
+
+        .liang_icon-card svg {
+            width: 34px;
+            height: 34px;
+            color: #7fd6b8;
+            margin-bottom: 10px;
+        }
+
+        .liang_icon-card .liang_icon-name {
+            display: block;
+            font-size: 13px;
+            color: #c6ded5;
+        }
+
+        .liang_icon-card code {
+            display: block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #6f9a8c;
+            word-break: break-all;
+        }
+
+        .liang_size-demo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 28px;
+            padding: 22px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_size-item {
+            text-align: center;
+        }
+
+        .liang_size-item svg {
+            display: block;
+            color: #7fd6b8;
+            margin: 0 auto 8px;
+        }
+
+        .liang_size-item span {
+            font-size: 12px;
+            color: #93b3aa;
+        }
+
+        .liang_color-demo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 26px;
+            padding: 22px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_color-demo svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .liang_anim-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 30px;
+            padding: 22px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_anim-item {
+            text-align: center;
+        }
+
+        .liang_anim-item svg {
+            width: 38px;
+            height: 38px;
+            color: #5eead4;
+            margin-bottom: 8px;
+        }
+
+        .liang_anim-item span {
+            display: block;
+            font-size: 12px;
+            color: #93b3aa;
+        }
+
+        .liang_spin {
+            animation: liang_lucide-spin 2s linear infinite;
+        }
+
+        .liang_pulse {
+            animation: liang_lucide-pulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes liang_lucide-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes liang_lucide-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 0.7;
+            }
+        }
+
+        .liang_stroke-demo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 26px;
+            padding: 22px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_stroke-item {
+            text-align: center;
+        }
+
+        .liang_stroke-item svg {
+            width: 40px;
+            height: 40px;
+            color: #ffb454;
+            margin-bottom: 8px;
+        }
+
+        .liang_stroke-item span {
+            display: block;
+            font-size: 12px;
+            color: #93b3aa;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #16241f;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(143, 227, 200, 0.16);
+            text-align: left;
+        }
+
+        th {
+            background: #38d0a0;
+            color: #0c1713;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td code {
+            color: #7fd6b8;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .liang_page {
+                padding: 28px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="liang_page">
+        <h1>Lucide 图标（SVG 方式）</h1>
+        <p class="liang_description">
+            Lucide 是基于 Feather Icons 的开源图标库，以“SVG 方式”使用：
+            通过 <code>data-lucide</code> 属性声明图标名，脚本会把元素替换为内联 <code>&lt;svg&gt;</code>，
+            再像普通 SVG 一样用 CSS 控制颜色、尺寸和动画。
+        </p>
+        <p class="liang_tip">
+            用法要点：引入 <code>cdn/lucide.min.js</code>，在元素上写
+            <code>&lt;i data-lucide="home"&gt;&lt;/i&gt;</code>，最后调用
+            <code>lucide.createIcons()</code>。生成的 <code>&lt;svg&gt;</code> 默认继承
+            <code>currentColor</code>，用 <code>color</code> 即可改色。
+        </p>
+
+        <section aria-label="常用图标">
+            <h2>一、常用图标一览</h2>
+            <p class="liang_section-desc">下面每个 <code>&lt;i data-lucide="..."&gt;</code> 都会被脚本替换为内联 SVG。</p>
+            <div class="liang_icon-grid">
+                <div class="liang_icon-card">
+                    <i data-lucide="home"></i>
+                    <span class="liang_icon-name">首页</span>
+                    <code>home</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="user"></i>
+                    <span class="liang_icon-name">用户</span>
+                    <code>user</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="heart"></i>
+                    <span class="liang_icon-name">喜欢</span>
+                    <code>heart</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="star"></i>
+                    <span class="liang_icon-name">收藏</span>
+                    <code>star</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="search"></i>
+                    <span class="liang_icon-name">搜索</span>
+                    <code>search</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="settings"></i>
+                    <span class="liang_icon-name">设置</span>
+                    <code>settings</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="bell"></i>
+                    <span class="liang_icon-name">通知</span>
+                    <code>bell</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="mail"></i>
+                    <span class="liang_icon-name">邮件</span>
+                    <code>mail</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="camera"></i>
+                    <span class="liang_icon-name">相机</span>
+                    <code>camera</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="shopping-cart"></i>
+                    <span class="liang_icon-name">购物车</span>
+                    <code>shopping-cart</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="upload-cloud"></i>
+                    <span class="liang_icon-name">上传</span>
+                    <code>upload-cloud</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i data-lucide="download"></i>
+                    <span class="liang_icon-name">下载</span>
+                    <code>download</code>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="尺寸与颜色">
+            <h2>二、尺寸与颜色</h2>
+            <p class="liang_section-desc">
+                内联 SVG 可通过 <code>width</code> / <code>height</code> 或 CSS 控制大小，
+                <code>color</code> 配合 <code>currentColor</code> 控制描边颜色。
+            </p>
+            <div class="liang_size-demo">
+                <div class="liang_size-item">
+                    <i data-lucide="music" style="width: 16px; height: 16px;"></i>
+                    <span>16px</span>
+                </div>
+                <div class="liang_size-item">
+                    <i data-lucide="music" style="width: 24px; height: 24px;"></i>
+                    <span>24px</span>
+                </div>
+                <div class="liang_size-item">
+                    <i data-lucide="music" style="width: 32px; height: 32px;"></i>
+                    <span>32px</span>
+                </div>
+                <div class="liang_size-item">
+                    <i data-lucide="music" style="width: 48px; height: 48px;"></i>
+                    <span>48px</span>
+                </div>
+                <div class="liang_size-item">
+                    <i data-lucide="music" style="width: 64px; height: 64px;"></i>
+                    <span>64px</span>
+                </div>
+            </div>
+            <div class="liang_color-demo" style="margin-top: 14px;">
+                <i data-lucide="heart" style="color: #ff6b8a;"></i>
+                <i data-lucide="heart" style="color: #ffd166;"></i>
+                <i data-lucide="heart" style="color: #5eead4;"></i>
+                <i data-lucide="heart" style="color: #a78bfa;"></i>
+                <i data-lucide="heart" style="color: #38d0a0;"></i>
+            </div>
+        </section>
+
+        <section aria-label="描边粗细">
+            <h2>三、描边粗细（stroke-width）</h2>
+            <p class="liang_section-desc">
+                Lucide 图标由描边构成，可在元素上设置 <code>stroke-width</code> 属性来调整线条粗细。
+            </p>
+            <div class="liang_stroke-demo">
+                <div class="liang_stroke-item">
+                    <i data-lucide="pencil" stroke-width="1"></i>
+                    <span>1</span>
+                </div>
+                <div class="liang_stroke-item">
+                    <i data-lucide="pencil" stroke-width="2"></i>
+                    <span>2</span>
+                </div>
+                <div class="liang_stroke-item">
+                    <i data-lucide="pencil" stroke-width="3"></i>
+                    <span>3</span>
+                </div>
+                <div class="liang_stroke-item">
+                    <i data-lucide="pencil" stroke-width="4"></i>
+                    <span>4</span>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="动画">
+            <h2>四、自定义动画</h2>
+            <p class="liang_section-desc">
+                因为最终得到的是普通 SVG，所以可以像操作任何 DOM 元素一样为其添加 CSS 动画。
+            </p>
+            <div class="liang_anim-row">
+                <div class="liang_anim-item">
+                    <i data-lucide="loader-2" class="liang_spin"></i>
+                    <span>旋转</span>
+                </div>
+                <div class="liang_anim-item">
+                    <i data-lucide="sun" class="liang_spin"></i>
+                    <span>旋转</span>
+                </div>
+                <div class="liang_anim-item">
+                    <i data-lucide="heart" class="liang_pulse"></i>
+                    <span>脉冲</span>
+                </div>
+                <div class="liang_anim-item">
+                    <i data-lucide="volume-2" class="liang_pulse"></i>
+                    <span>脉冲</span>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="用法速查表">
+            <h2>五、用法速查表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>属性 / 方法</th>
+                        <th>作用</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>data-lucide="名称"</code></td>
+                        <td>声明图标</td>
+                        <td>图标名为小写短横线命名，如 <code>shopping-cart</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>lucide.createIcons()</code></td>
+                        <td>渲染图标</td>
+                        <td>扫描 DOM 并把占位元素替换为内联 SVG</td>
+                    </tr>
+                    <tr>
+                        <td><code>width / height</code></td>
+                        <td>尺寸</td>
+                        <td>设置 SVG 的宽高，默认 24×24</td>
+                    </tr>
+                    <tr>
+                        <td><code>color</code></td>
+                        <td>颜色</td>
+                        <td>SVG 使用 <code>currentColor</code> 描边</td>
+                    </tr>
+                    <tr>
+                        <td><code>stroke-width</code></td>
+                        <td>线条粗细</td>
+                        <td>默认 2，可设为 1–4</td>
+                    </tr>
+                    <tr>
+                        <td><code>class</code></td>
+                        <td>附加样式</td>
+                        <td>可叠加任意 CSS 类与动画</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

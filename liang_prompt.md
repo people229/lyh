@@ -40,3 +40,26 @@
 ## 2026-10-15 14:58
 - model: opencode/mimo-v2.6-flash-free
 - prompt: 创建skill：提交项目：使用git，commit并push到仓库https://gitee.com/liang-yuehong/lyh.git
+
+
+## 2026-10-19 13:39
+
+- 模型: opencode/mimo-v2.6-flash-free
+- 提示词:
+
+> 做两个html网页，13-1.html,13-2.html分别显示fonta wesome图标和lucide图标，前者使用字体图标的方式，后者使用svg的方式，相关的cdn文件下载到本目录下的cdn目录。
+
+
+
+## 2026-10-19 14:30
+
+- 模型: opencode/mimo-v2.6-flash-free
+- 提示词:
+
+> 根据font目录中的iconfont图标完成移动端的固定的自适应宽度的下导航，导航项目包括4个，完成html网页的设计，网页名称13-3.html和13-4.html，分别使用字体图标和svg，包括右上角的数字徽章和红点。
+
+
+## 2026-10-22 13:54
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 创建trae的skill，根据给定文件

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梁月虹 - Font Awesome 字体图标</title>
+    <link rel="stylesheet" href="./cdn/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background: #0f1424;
+            color: #e8ecf8;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .liang_page {
+            width: min(100%, 1120px);
+            margin: 0 auto;
+            padding: 40px 24px 70px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .liang_description {
+            margin: 0 0 10px;
+            color: #9aa6c9;
+            font-size: 16px;
+        }
+
+        .liang_tip {
+            margin: 0 0 28px;
+            padding: 10px 14px;
+            border-left: 4px solid #ffb454;
+            background: rgba(255, 180, 84, 0.12);
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+            color: #ffd39b;
+            line-height: 1.7;
+        }
+
+        section {
+            margin-top: 40px;
+        }
+
+        h2 {
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+        .liang_section-desc {
+            margin: 0 0 16px;
+            font-size: 14px;
+            color: #9aa6c9;
+        }
+
+        .liang_icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px;
+        }
+
+        .liang_icon-card {
+            background: #1d2542;
+            border: 1px solid rgba(143, 168, 255, 0.22);
+            border-radius: 12px;
+            padding: 18px 12px 14px;
+            text-align: center;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .liang_icon-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 180, 84, 0.6);
+            background: #232c50;
+        }
+
+        .liang_icon-card i {
+            font-size: 34px;
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #8fa8ff;
+        }
+
+        .liang_icon-card .liang_icon-name {
+            display: block;
+            font-size: 13px;
+            color: #c3cdec;
+        }
+
+        .liang_icon-card code {
+            display: block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #7f8db5;
+            word-break: break-all;
+        }
+
+        .liang_style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .liang_style-card {
+            background: #1d2542;
+            border: 1px solid rgba(143, 168, 255, 0.22);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .liang_style-card h3 {
+            margin: 0 0 6px;
+            font-size: 17px;
+        }
+
+        .liang_style-card h3 code {
+            color: #ffd39b;
+        }
+
+        .liang_style-card p {
+            margin: 0 0 14px;
+            font-size: 13px;
+            color: #9aa6c9;
+            line-height: 1.7;
+        }
+
+        .liang_style-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_style-row i {
+            font-size: 30px;
+        }
+
+        .liang_solid {
+            color: #6c8cff;
+        }
+
+        .liang_regular {
+            color: #38d0c6;
+        }
+
+        .liang_brands {
+            color: #ff8f9e;
+        }
+
+        .liang_size-demo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 26px;
+            padding: 22px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_size-item {
+            text-align: center;
+        }
+
+        .liang_size-item i {
+            display: block;
+            color: #8fa8ff;
+            margin-bottom: 8px;
+        }
+
+        .liang_size-item span {
+            font-size: 12px;
+            color: #9aa6c9;
+        }
+
+        .liang_spin-demo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 28px;
+            padding: 22px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_spin-item {
+            text-align: center;
+        }
+
+        .liang_spin-item i {
+            display: block;
+            color: #ffb454;
+            margin-bottom: 8px;
+        }
+
+        .liang_spin-item span {
+            font-size: 12px;
+            color: #9aa6c9;
+        }
+
+        .liang_spin {
+            animation: liang_fa-spin 2s linear infinite;
+        }
+
+        .liang_pulse {
+            animation: liang_fa-pulse 2s linear infinite;
+        }
+
+        .liang_bounce {
+            animation: liang_bounce-anim 1.2s ease-in-out infinite;
+        }
+
+        @keyframes liang_fa-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes liang_fa-pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.18);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes liang_bounce-anim {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .liang_stack {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 26px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .liang_stack-item {
+            position: relative;
+            display: inline-block;
+        }
+
+        .liang_stack-item .liang_stack-bg {
+            font-size: 56px;
+            color: #38d0c6;
+        }
+
+        .liang_stack-item .liang_stack-fg {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: 26px;
+            color: #0f1424;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1d2542;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(143, 168, 255, 0.18);
+            text-align: left;
+        }
+
+        th {
+            background: #3b6cf5;
+            color: #fff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td code {
+            color: #8fa8ff;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .liang_page {
+                padding: 28px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="liang_page">
+        <h1>Font Awesome 字体图标</h1>
+        <p class="liang_description">
+            Font Awesome 是典型的“字体图标”方案：把图标做成一套字形（webfont），
+            再用 <code>&lt;i&gt;</code> 标签配合 CSS 类名像文字一样显示，可随意改颜色、改大小。
+        </p>
+        <p class="liang_tip">
+            字体图标的用法：引入 <code>cdn/all.min.css</code> 后，使用
+            <code>&lt;i class="fa-solid fa-house"&gt;&lt;/i&gt;</code> 即可；
+            <code>fa-solid</code> 为实体风格、<code>fa-regular</code> 为线性风格、
+            <code>fa-brands</code> 为品牌图标。字体文件位于 <code>cdn/webfonts/</code>。
+        </p>
+
+        <section aria-label="图标风格">
+            <h2>一、三种图标风格</h2>
+            <p class="liang_section-desc">
+                Font Awesome 6 将图标分为 Solid（实体）、Regular（线性）、Brands（品牌）三套字重。
+            </p>
+            <div class="liang_style-grid">
+                <div class="liang_style-card">
+                    <h3><code>fa-solid</code> 实体</h3>
+                    <p>font-weight: 900，图标填充饱满，最常用。</p>
+                    <div class="liang_style-row">
+                        <i class="fa-solid liang_solid fa-house"></i>
+                        <i class="fa-solid liang_solid fa-heart"></i>
+                        <i class="fa-solid liang_solid fa-star"></i>
+                        <i class="fa-solid liang_solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+                <div class="liang_style-card">
+                    <h3><code>fa-regular</code> 线性</h3>
+                    <p>font-weight: 400，图标只保留轮廓，风格更轻。</p>
+                    <div class="liang_style-row">
+                        <i class="fa-regular liang_regular fa-square"></i>
+                        <i class="fa-regular liang_regular fa-circle"></i>
+                        <i class="fa-regular liang_regular fa-face-smile"></i>
+                        <i class="fa-regular liang_regular fa-clock"></i>
+                    </div>
+                </div>
+                <div class="liang_style-card">
+                    <h3><code>fa-brands</code> 品牌</h3>
+                    <p>font-weight: 400，收录常见互联网品牌标识。</p>
+                    <div class="liang_style-row">
+                        <i class="fa-brands liang_brands fa-github"></i>
+                        <i class="fa-brands liang_brands fa-weixin"></i>
+                        <i class="fa-brands liang_brands fa-chrome"></i>
+                        <i class="fa-brands liang_brands fa-css3-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="常用图标">
+            <h2>二、常用图标一览</h2>
+            <p class="liang_section-desc">以网格形式展示一组常用的实体图标，鼠标悬停可看到卡片的浮起效果。</p>
+            <div class="liang_icon-grid">
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="liang_icon-name">首页</span>
+                    <code>fa-house</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="liang_icon-name">用户</span>
+                    <code>fa-user</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-heart"></i>
+                    <span class="liang_icon-name">喜欢</span>
+                    <code>fa-heart</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-star"></i>
+                    <span class="liang_icon-name">收藏</span>
+                    <code>fa-star</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="liang_icon-name">搜索</span>
+                    <code>fa-magnifying-glass</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="liang_icon-name">设置</span>
+                    <code>fa-gear</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="liang_icon-name">通知</span>
+                    <code>fa-bell</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span class="liang_icon-name">邮件</span>
+                    <code>fa-envelope</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-camera"></i>
+                    <span class="liang_icon-name">相机</span>
+                    <code>fa-camera</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="liang_icon-name">购物车</span>
+                    <code>fa-cart-shopping</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="liang_icon-name">上传</span>
+                    <code>fa-cloud-arrow-up</code>
+                </div>
+                <div class="liang_icon-card">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="liang_icon-name">下载</span>
+                    <code>fa-download</code>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="尺寸与颜色">
+            <h2>三、尺寸与颜色</h2>
+            <p class="liang_section-desc">
+                字体图标本质是文字，因此 <code>font-size</code> 控制大小、<code>color</code> 控制颜色，
+                还可以直接使用 <code>fa-2x</code>、<code>fa-3x</code> 等缩放类。
+            </p>
+            <div class="liang_style-card">
+                <div class="liang_size-demo">
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-music" style="font-size: 16px;"></i>
+                        <span>16px</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-music" style="font-size: 24px;"></i>
+                        <span>24px</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-music" style="font-size: 32px;"></i>
+                        <span>32px</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-music" style="font-size: 48px;"></i>
+                        <span>48px</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-music" style="font-size: 64px;"></i>
+                        <span>64px</span>
+                    </div>
+                </div>
+                <div class="liang_size-demo" style="margin-top: 14px;">
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-heart" style="color: #ff6b8a;"></i>
+                        <span>#ff6b8a</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-heart" style="color: #ffd166;"></i>
+                        <span>#ffd166</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-heart" style="color: #5eead4;"></i>
+                        <span>#5eead4</span>
+                    </div>
+                    <div class="liang_size-item">
+                        <i class="fa-solid fa-heart" style="color: #a78bfa;"></i>
+                        <span>#a78bfa</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="旋转与动画">
+            <h2>四、旋转与动画</h2>
+            <p class="liang_section-desc">
+                Font Awesome 自带 <code>fa-spin</code>、<code>fa-pulse</code> 动画类，
+                也可以像普通元素一样用 <code>@keyframes</code> 自定义动画。
+            </p>
+            <div class="liang_spin-demo">
+                <div class="liang_spin-item">
+                    <i class="fa-solid fa-rotate-right fa-spin"></i>
+                    <span>fa-spin</span>
+                </div>
+                <div class="liang_spin-item">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <span>fa-spin</span>
+                </div>
+                <div class="liang_spin-item">
+                    <i class="fa-solid fa-gear fa-pulse"></i>
+                    <span>fa-pulse</span>
+                </div>
+                <div class="liang_spin-item">
+                    <i class="fa-solid fa-heart liang_bounce"></i>
+                    <span>自定义 bounce</span>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="图标堆叠">
+            <h2>五、图标堆叠（fa-stack）</h2>
+            <p class="liang_section-desc">
+                通过 <code>fa-stack</code> 容器把两个图标叠放在一起，常用于“图标上加角标”的效果。
+            </p>
+            <div class="liang_stack">
+                <span class="liang_stack-item fa-stack fa-2x">
+                    <i class="fa-solid fa-folder liang_stack-bg"></i>
+                    <i class="fa-solid fa-plus liang_stack-fg"></i>
+                </span>
+                <span class="liang_stack-item fa-stack fa-2x">
+                    <i class="fa-solid liang_stack-bg fa-circle"></i>
+                    <i class="fa-solid liang_stack-fg fa-check"></i>
+                </span>
+                <span class="liang_stack-item fa-stack fa-2x">
+                    <i class="fa-solid liang_stack-bg fa-comment"></i>
+                    <i class="fa-solid liang_stack-fg fa-star"></i>
+                </span>
+            </div>
+        </section>
+
+        <section aria-label="用法速查表">
+            <h2>六、用法速查表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>类名 / 属性</th>
+                        <th>作用</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>fa-solid</code></td>
+                        <td>实体风格</td>
+                        <td>font-weight: 900，最常用</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-regular</code></td>
+                        <td>线性风格</td>
+                        <td>font-weight: 400，需对应字体文件</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-brands</code></td>
+                        <td>品牌图标</td>
+                        <td>收录各类品牌标识</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-2x / fa-3x</code></td>
+                        <td>缩放</td>
+                        <td>按比例放大图标</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-spin</code></td>
+                        <td>旋转动画</td>
+                        <td>360° 匀速旋转，可做加载指示</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-pulse</code></td>
+                        <td>脉冲动画</td>
+                        <td>8 步旋转，适合加载中</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-fw</code></td>
+                        <td>定宽</td>
+                        <td>固定图标宽度，便于对齐</td>
+                    </tr>
+                    <tr>
+                        <td><code>fa-stack</code></td>
+                        <td>堆叠</td>
+                        <td>配合 <code>fa-stack-1x</code> / <code>fa-stack-2x</code> 叠放图标</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>梁月虹 - 移动端固定下导航（字体图标）</title>
+    <link rel="stylesheet" href="./font/font_5244708_zkj0shedp19/iconfont.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 0%, #233052, #0e1322);
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            color: #24324a;
+        }
+
+        .liang_page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .liang_app {
+            position: relative;
+            width: 100%;
+            max-width: 430px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f4f6fb;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        @media (min-width: 500px) {
+            .liang_page {
+                padding: 24px 16px;
+            }
+
+            .liang_app {
+                height: calc(100vh - 48px);
+                max-height: 820px;
+                border: 8px solid #10182b;
+                border-radius: 28px;
+            }
+        }
+
+        .liang_app-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .liang_app-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .liang_app-header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            padding: 18px 18px 12px;
+            background: #ffffff;
+            border-bottom: 1px solid #eef0f5;
+        }
+
+        .liang_app-header h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .liang_app-header p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: #98a2b8;
+        }
+
+        .liang_app-main {
+            padding: 14px;
+        }
+
+        .liang_card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 18px rgba(30, 45, 90, 0.05);
+        }
+
+        .liang_card h2 {
+            margin: 0 0 8px;
+            font-size: 15px;
+            color: #2b3a55;
+        }
+
+        .liang_card p {
+            margin: 0;
+            font-size: 13px;
+            color: #7a869e;
+            line-height: 1.7;
+        }
+
+        .liang_hero {
+            background: linear-gradient(135deg, #3b6cf5, #6c8cff);
+            color: #fff;
+        }
+
+        .liang_hero h2 {
+            color: #fff;
+        }
+
+        .liang_hero p {
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .liang_list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .liang_list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 0;
+            border-bottom: 1px dashed #eef0f5;
+            font-size: 13px;
+            color: #5a6579;
+        }
+
+        .liang_list li:last-child {
+            border-bottom: none;
+        }
+
+        .liang_list .liang_list-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b6cf5;
+        }
+
+        .liang_legend {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .liang_legend-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .liang_legend-demo {
+            position: relative;
+            display: inline-flex;
+            width: 34px;
+            justify-content: center;
+        }
+
+        .liang_legend-demo .iconfont {
+            font-size: 26px;
+            color: #5a6579;
+        }
+
+        .liang_legend-text {
+            font-size: 13px;
+            color: #7a869e;
+            line-height: 1.6;
+        }
+
+        .liang_legend-text b {
+            color: #2b3a55;
+        }
+
+        .liang_tabbar {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            background: #ffffff;
+            border-top: 1px solid #e9edf4;
+            box-shadow: 0 -6px 20px rgba(30, 45, 90, 0.08);
+            padding-bottom: env(safe-area-inset-bottom, 0);
+            z-index: 10;
+        }
+
+        .liang_tab {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 9px 0 8px;
+            text-decoration: none;
+            color: #98a2b8;
+            font-size: 11px;
+            transition: color 0.2s ease;
+        }
+
+        .liang_tab.is-active {
+            color: #3b6cf5;
+        }
+
+        .liang_tab:active {
+            color: #3b6cf5;
+        }
+
+        .liang_tab-iconwrap {
+            position: relative;
+            display: inline-flex;
+            line-height: 1;
+        }
+
+        .liang_tab-iconwrap .iconfont {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .liang_badge {
+            position: absolute;
+            top: -6px;
+            right: -12px;
+            min-width: 17px;
+            height: 17px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #ff3b5c;
+            color: #fff;
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 17px;
+            text-align: center;
+            border: 1.5px solid #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .liang_dot {
+            position: absolute;
+            top: -2px;
+            right: -3px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff3b5c;
+            border: 1.5px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="liang_page">
+        <div class="liang_app">
+            <div class="liang_app-scroll">
+                <header class="liang_app-header">
+                    <h1>移动端固定下导航 · 字体图标版</h1>
+                    <p>iconfont 字体图标 · 自适应宽度 · 固定底部</p>
+                </header>
+
+                <main class="liang_app-main">
+                    <div class="liang_card liang_hero">
+                        <h2>内容区与导航是一体的</h2>
+                        <p>下导航与内容同处一个 <code>liang_app</code> 容器：内容区 <code>flex: 1</code> 可滚动，下导航 <code>flex: 0 0 auto</code> 固定在容器底部。容器宽度 <code>100%</code> 且限制 <code>max-width</code>，导航宽度随容器自适应。</p>
+                    </div>
+
+                    <div class="liang_card">
+                        <h2>四个导航项</h2>
+                        <ul class="liang_list">
+                            <li><span class="liang_list-dot"></span>首页 · 当前选中项（高亮）</li>
+                            <li><span class="liang_list-dot"></span>发现 · 右上角红点提示</li>
+                            <li><span class="liang_list-dot"></span>消息 · 右上角数字徽章</li>
+                            <li><span class="liang_list-dot"></span>我的 · 右上角数字徽章</li>
+                        </ul>
+                    </div>
+
+                    <div class="liang_card liang_legend">
+                        <h2>徽章与红点</h2>
+                        <div class="liang_legend-row">
+                            <span class="liang_legend-demo">
+                                <i class="iconfont icon-xiaoxi"></i>
+                                <b class="liang_badge">12</b>
+                            </span>
+                            <span class="liang_legend-text"><b>数字徽章</b>：显示未读数量，如 <code>12</code>、<code>99+</code></span>
+                        </div>
+                        <div class="liang_legend-row">
+                            <span class="liang_legend-demo">
+                                <i class="iconfont icon-faxian"></i>
+                                <i class="liang_dot"></i>
+                            </span>
+                            <span class="liang_legend-text"><b>红点</b>：仅提示“有新内容”，不显示具体数量</span>
+                        </div>
+                    </div>
+
+                    <div class="liang_card">
+                        <h2>字体图标</h2>
+                        <p>图标来自 <code>font/</code> 目录中的 iconfont，通过 <code>&lt;i class="iconfont icon-shouye"&gt;</code> 调用。图标本质是文字，可直接用 <code>color</code> 控制颜色。</p>
+                    </div>
+                </main>
+            </div>
+
+            <nav class="liang_tabbar" aria-label="底部导航">
+                <a class="liang_tab is-active" href="#">
+                    <span class="liang_tab-iconwrap">
+                        <i class="iconfont icon-shouye"></i>
+                    </span>
+                    <span class="liang_tab-label">首页</span>
+                </a>
+                <a class="liang_tab" href="#">
+                    <span class="liang_tab-iconwrap">
+                        <i class="iconfont icon-faxian"></i>
+                        <i class="liang_dot"></i>
+                    </span>
+                    <span class="liang_tab-label">发现</span>
+                </a>
+                <a class="liang_tab" href="#">
+                    <span class="liang_tab-iconwrap">
+                        <i class="iconfont icon-xiaoxi"></i>
+                        <b class="liang_badge">12</b>
+                    </span>
+                    <span class="liang_tab-label">消息</span>
+                </a>
+                <a class="liang_tab" href="#">
+                    <span class="liang_tab-iconwrap">
+                        <i class="iconfont icon-My"></i>
+                        <b class="liang_badge">99+</b>
+                    </span>
+                    <span class="liang_tab-label">我的</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
