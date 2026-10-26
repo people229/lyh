@@ -1,0 +1,348 @@
+<!--
+  姓名: 梁月虹
+  日期: 2026-10-22
+  功能: JavaScript 基本六种数据类型演示
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14-2 JavaScript 六种基本数据类型</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff, #fff7e8);
+            color: #24324a;
+            min-height: 100vh;
+            padding: 30px 20px 60px;
+        }
+
+        .lyh_container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .lyh_header {
+            text-align: center;
+            background: linear-gradient(135deg, #3b6cf5, #5d96ff);
+            color: #fff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 18px 40px rgba(59, 108, 245, 0.25);
+            margin-bottom: 30px;
+        }
+        .lyh_header h1 {
+            font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+            margin-bottom: 10px;
+        }
+        .lyh_header p {
+            font-size: 1rem;
+            opacity: 0.92;
+        }
+
+        .lyh_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .lyh_card {
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 16px;
+            padding: 22px 20px;
+            box-shadow: 0 8px 24px rgba(36, 79, 197, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .lyh_card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(36, 79, 197, 0.14);
+        }
+
+        .lyh_card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .lyh_badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffb454, #ff8a3d);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+        .lyh_type-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #244fc5;
+        }
+
+        .lyh_card p {
+            font-size: 0.92rem;
+            color: #5d6c89;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .lyh_code {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .lyh_code .lyh_keyword { color: #f472b6; }
+        .lyh_code .lyh_string  { color: #86efac; }
+        .lyh_code .lyh_number  { color: #fcd34d; }
+        .lyh_code .lyh_comment { color: #64748b; font-style: italic; }
+
+        .lyh_btn {
+            background: #3b6cf5;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .lyh_btn:hover { background: #244fc5; }
+
+        .lyh_result {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #24324a;
+            background: rgba(59, 108, 245, 0.08);
+            border-left: 3px solid #3b6cf5;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: "Consolas", monospace;
+            min-height: 1.2em;
+        }
+
+        .lyh_console-wrap {
+            background: #0f172a;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+        }
+        .lyh_console-title {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        #lyh_console {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 0.88rem;
+            line-height: 1.8;
+            padding: 16px;
+            border-radius: 10px;
+            min-height: 160px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 500px) {
+            .lyh_header { padding: 28px 20px; }
+            .lyh_container { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lyh_container">
+        <header class="lyh_header">
+            <h1>JavaScript 六种基本数据类型</h1>
+            <p>Number · String · Boolean · Null · Undefined · Object — 点击每张卡片的按钮查看 typeof 结果</p>
+        </header>
+
+        <div class="lyh_grid">
+            <!-- 1. Number -->
+            <div class="lyh_card">
+                <div class="lyh_card-header">
+                    <span class="lyh_badge">1 / 6</span>
+                    <span class="lyh_type-name">Number 数值</span>
+                </div>
+                <p>包括整数、浮点数、科学计数、Infinity、NaN。</p>
+                <div class="lyh_code"><span class="lyh_comment">// 各种数字</span>
+<span class="lyh_keyword">var</span> lyh_int = <span class="lyh_number">100</span>;
+<span class="lyh_keyword">var</span> lyh_float = <span class="lyh_number">3.14</span>;
+<span class="lyh_keyword">var</span> lyh_big = <span class="lyh_number">1.23e6</span>;</div>
+                <button class="lyh_btn" onclick="lyh_show('number')">运行 typeof</button>
+                <div class="lyh_result" id="lyh_res-number"></div>
+            </div>
+
+            <!-- 2. String -->
+            <div class="lyh_card">
+                <div class="lyh_card-header">
+                    <span class="lyh_badge">2 / 6</span>
+                    <span class="lyh_type-name">String 字符串</span>
+                </div>
+                <p>用单引号、双引号或反引号包裹的文本序列。</p>
+                <div class="lyh_code"><span class="lyh_comment">// 字符串的三种写法</span>
+<span class="lyh_keyword">var</span> lyh_s1 = <span class="lyh_string">'hello'</span>;
+<span class="lyh_keyword">var</span> lyh_s2 = <span class="lyh_string">"world"</span>;
+<span class="lyh_keyword">var</span> lyh_s3 = <span class="lyh_string">`模板字符串`</span>;</div>
+                <button class="lyh_btn" onclick="lyh_show('string')">运行 typeof</button>
+                <div class="lyh_result" id="lyh_res-string"></div>
+            </div>
+
+            <!-- 3. Boolean -->
+            <div class="lyh_card">
+                <div class="lyh_card-header">
+                    <span class="lyh_badge">3 / 6</span>
+                    <span class="lyh_type-name">Boolean 布尔</span>
+                </div>
+                <p>只有两个值：true（真）和 false（假）。</p>
+                <div class="lyh_code"><span class="lyh_keyword">var</span> lyh_ok = <span class="lyh_keyword">true</span>;
+<span class="lyh_keyword">var</span> lyh_no = <span class="lyh_keyword">false</span>;
+<span class="lyh_comment">// 关系运算返回布尔</span>
+<span class="lyh_keyword">var</span> lyh_cmp = (<span class="lyh_number">5</span> &gt; <span class="lyh_number">3</span>);</div>
+                <button class="lyh_btn" onclick="lyh_show('boolean')">运行 typeof</button>
+                <div class="lyh_result" id="lyh_res-boolean"></div>
+            </div>
+
+            <!-- 4. Null -->
+            <div class="lyh_card">
+                <div class="lyh_card-header">
+                    <span class="lyh_badge">4 / 6</span>
+                    <span class="lyh_type-name">Null 空值</span>
+                </div>
+                <p>表示"没有对象"。注意：<b>typeof null === 'object'</b>（历史遗留 bug）。</p>
+                <div class="lyh_code"><span class="lyh_keyword">var</span> lyh_nothing = <span class="lyh_keyword">null</span>;
+<span class="lyh_comment">// 空值也是一个关键字</span></div>
+                <button class="lyh_btn" onclick="lyh_show('null')">运行 typeof</button>
+                <div class="lyh_result" id="lyh_res-null"></div>
+            </div>
+
+            <!-- 5. Undefined -->
+            <div class="lyh_card">
+                <div class="lyh_card-header">
+                    <span class="lyh_badge">5 / 6</span>
+                    <span class="lyh_type-name">Undefined 未定义</span>
+                </div>
+                <p>变量声明后未赋值、或访问不存在的属性时得到的值。</p>
+                <div class="lyh_code"><span class="lyh_keyword">var</span> lyh_x;        <span class="lyh_comment">// 声明未赋值</span>
+<span class="lyh_keyword">var</span> lyh_y = lyh_x;   <span class="lyh_comment">// y 也是 undefined</span></div>
+                <button class="lyh_btn" onclick="lyh_show('undefined')">运行 typeof</button>
+                <div class="lyh_result" id="lyh_res-undefined"></div>
+            </div>
+
+            <!-- 6. Object -->
+            <div class="lyh_card">
+                <div class="lyh_card-header">
+                    <span class="lyh_badge">6 / 6</span>
+                    <span class="lyh_type-name">Object 对象</span>
+                </div>
+                <p>引用类型，包括普通对象、数组、函数、Date 等。</p>
+                <div class="lyh_code"><span class="lyh_keyword">var</span> lyh_obj = {<span class="lyh_string">name</span>: <span class="lyh_string">'梁月虹'</span>};
+<span class="lyh_keyword">var</span> lyh_arr = [<span class="lyh_number">1</span>, <span class="lyh_number">2</span>, <span class="lyh_number">3</span>];
+<span class="lyh_keyword">var</span> lyh_fn = <span class="lyh_keyword">function</span>(){};</div>
+                <button class="lyh_btn" onclick="lyh_show('object')">运行 typeof</button>
+                <div class="lyh_result" id="lyh_res-object"></div>
+            </div>
+        </div>
+
+        <div class="lyh_console-wrap">
+            <div class="lyh_console-title">📋 控制台输出（点击卡片按钮后结果会出现在这里）</div>
+            <div id="lyh_console">// 点击上方卡片的按钮即可查看运行结果</div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var lyh_log = document.getElementById("lyh_console");
+            var lyh_first = true;
+
+            // 每种数据类型的演示变量
+            var lyh_int = 100;
+            var lyh_float = 3.14;
+            var lyh_s1 = 'hello';
+            var lyh_ok = true;
+            var lyh_nothing = null;
+            var lyh_x;
+            var lyh_obj = { name: '梁月虹' };
+            var lyh_arr = [1, 2, 3];
+            var lyh_fn = function () {};
+
+            var lyh_types = {
+                number: [
+                    { label: 'lyh_int = 100',              value: lyh_int,   note: '' },
+                    { label: 'lyh_float = 3.14',           value: lyh_float, note: '' },
+                    { label: 'typeof NaN',                  value: typeof NaN, note: 'NaN 本身也是 Number 类型' }
+                ],
+                string: [
+                    { label: "lyh_s1 = 'hello'",           value: lyh_s1,    note: '' },
+                    { label: 'typeof ""',                  value: typeof "", note: '空字符串也是 String' }
+                ],
+                boolean: [
+                    { label: 'lyh_ok = true',              value: lyh_ok,    note: '' },
+                    { label: 'typeof (5 > 3)',             value: typeof (5 > 3), note: '比较运算返回 Boolean' }
+                ],
+                null: [
+                    { label: 'lyh_nothing = null',         value: lyh_nothing, note: '' },
+                    { label: 'typeof null',                value: typeof null, note: '⚠️ JS 历史 bug：返回 "object"' }
+                ],
+                undefined: [
+                    { label: 'lyh_x (声明未赋值)',         value: lyh_x,     note: '' },
+                    { label: 'typeof undefined',           value: typeof undefined, note: 'undefined 也是一个全局关键字' }
+                ],
+                object: [
+                    { label: 'typeof lyh_obj',             value: typeof lyh_obj, note: '普通对象' },
+                    { label: 'typeof lyh_arr',             value: typeof lyh_arr, note: '数组本质也是 Object' },
+                    { label: 'typeof lyh_fn',              value: typeof lyh_fn, note: '⚠️ 函数是特殊的 Object，typeof 返回 "function"' }
+                ]
+            };
+
+            window.lyh_show = function (key) {
+                var items = lyh_types[key];
+                var names = {
+                    number: 'Number 数值',
+                    string: 'String 字符串',
+                    boolean: 'Boolean 布尔',
+                    null: 'Null 空值',
+                    undefined: 'Undefined 未定义',
+                    object: 'Object 对象'
+                };
+
+                // 更新卡片内即时结果
+                var cardRes = document.getElementById('lyh_res-' + key);
+                var cardText = items.map(function (it) {
+                    return it.label + ' → typeof = ' + it.value;
+                }).join('\n');
+                cardRes.textContent = cardText;
+
+                // 控制台输出
+                if (lyh_first) {
+                    lyh_log.textContent = '';
+                    lyh_first = false;
+                }
+                var block = '\n=== ' + names[key] + ' ===\n';
+                items.forEach(function (it) {
+                    block += '> ' + it.label + '\n';
+                    block += '  值: ' + it.value + '\n';
+                    block += '  typeof: ' + typeof it.value + (it.note ? '   ← ' + it.note : '') + '\n';
+                });
+                lyh_log.textContent += block;
+                lyh_log.scrollTop = lyh_log.scrollHeight;
+            };
+        })();
+    </script>
+</body>
+</html>

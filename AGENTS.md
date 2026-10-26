@@ -23,5 +23,19 @@ Static HTML/CSS classroom exercises for《高级网页设计》. Flat directory 
 ## Standing user rules
 
 - **Every newly created `.html` file must be linked from the homepage** `index.html` (add a card + bump the badge — see “When adding or renaming a page”). The owner requires all new pages to be reachable from index; a new page without its index link counts as unfinished work.
-- All CSS class names, id names, and JS variable names in new/edited pages **must start with `liang_`** (e.g. `.liang_page`). Older exercise pages predate this rule; don't rename them unless asked.
+- All CSS class names, id names, and JS variable names in new/edited pages **must start with `lyh_`** (e.g. `.lyh_page`). Older exercise pages predate this rule; don't rename them unless asked.
+- **No third-party libraries or CDNs.** All pages must use only native HTML, CSS, and JavaScript. No Bootstrap, no Tailwind, no external `<script src="...">` / `<link href="...">` from CDN (iconfont is the only exception — load it from the local `font/` directory).
+- **Icons must use the local iconfont** under `font/font_5244708_zkj0shedp19/`. Link `<link rel="stylesheet" href="./font/font_5244708_zkj0shedp19/iconfont.css">` in `<head>` and use `<i class="iconfont icon-xxx"></i>` to render. Do not use Font Awesome CDN, Lucide CDN, or any other icon source.
+- Every newly created `.html` page **must include a block comment at the top** stating: 姓名、建立时间、使用的大模型、功能名称（示例见下方注释模板）。
 - Before executing any user prompt, **append** (never overwrite) an entry to `liang_prompt.md` containing: timestamp (`yyyy-MM-dd HH:mm`), model (`opencode/mimo-v2.6-flash-free`), and the full prompt text. This is a hard requirement of the repo owner.
+
+## 新页面头部注释模板
+
+```html
+<!--
+  姓名: 梁月虹
+  建立时间: yyyy-MM-dd HH:mm
+  使用大模型: <创建该页面时实际使用的大模型名称>
+  功能: <本页面功能简述>
+-->
+```

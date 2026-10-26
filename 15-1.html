@@ -1,0 +1,329 @@
+<!--
+  姓名: 梁月虹
+  日期: 2026-10-26
+  功能: 数七游戏演示，100 个盒子按"逢7过"规则展示，满足规则的显示空盒子
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-1 数七游戏：一百个盒子</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            background: linear-gradient(160deg, #eef3ff, #fdf3e7);
+            color: #24324a;
+            min-height: 100vh;
+            padding: 30px 16px 60px;
+        }
+
+        .lyh_wrap {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* 顶部说明 */
+        .lyh_header {
+            background: linear-gradient(135deg, #3b6cf5, #6a5df5);
+            color: #fff;
+            border-radius: 18px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 14px 34px rgba(59, 108, 245, 0.25);
+            margin-bottom: 22px;
+        }
+        .lyh_header h1 {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+        }
+        .lyh_header p {
+            font-size: 0.95rem;
+            opacity: 0.92;
+            line-height: 1.7;
+        }
+
+        /* 统计与操作条 */
+        .lyh_toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 18px rgba(36, 79, 197, 0.07);
+        }
+        .lyh_stat {
+            font-size: 0.95rem;
+            color: #5d6c89;
+        }
+        .lyh_stat b {
+            color: #244fc5;
+            font-size: 1.15rem;
+            margin: 0 2px;
+        }
+        .lyh_stat .lyh_stat-pass b {
+            color: #e8590c;
+        }
+        .lyh_btn {
+            border: none;
+            border-radius: 8px;
+            padding: 9px 20px;
+            font-size: 0.92rem;
+            cursor: pointer;
+            color: #fff;
+            background: #3b6cf5;
+            transition: background 0.15s ease, transform 0.1s ease;
+        }
+        .lyh_btn:hover {
+            background: #244fc5;
+            transform: translateY(-1px);
+        }
+        .lyh_btn.lyh_btn-reveal {
+            background: #e8590c;
+        }
+        .lyh_btn.lyh_btn-reveal:hover {
+            background: #c94a08;
+        }
+
+        /* 图例 */
+        .lyh_legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: #5d6c89;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+        .lyh_legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .lyh_dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .lyh_dot-num {
+            background: #fff;
+            border: 2px solid #3b6cf5;
+        }
+        .lyh_dot-pass {
+            background: #fff1e8;
+            border: 2px dashed #f59f00;
+        }
+
+        /* 100 个盒子 10×10 网格 */
+        .lyh_grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 28px rgba(36, 79, 197, 0.09);
+        }
+
+        .lyh_box {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 8px;
+            background: #fff;
+            border: 2px solid #3b6cf5;
+            color: #244fc5;
+            cursor: default;
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            position: relative;
+        }
+        .lyh_box:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 14px rgba(36, 79, 197, 0.2);
+            z-index: 2;
+        }
+
+        /* 满足规则：空盒子（虚线橙色底），悬停显示"过" */
+        .lyh_box.lyh_pass {
+            border: 2px dashed #f59f00;
+            background: #fff1e8;
+            color: transparent;
+        }
+        .lyh_box.lyh_pass::after {
+            content: "过";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #e8590c;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .lyh_box.lyh_pass:hover::after {
+            opacity: 1;
+        }
+
+        /* 揭示模式：空盒子里也把原数字显示出来 */
+        .lyh_grid.lyh_revealed .lyh_box.lyh_pass {
+            color: #b06a00;
+            border-style: solid;
+            background: #ffe9cc;
+        }
+        .lyh_grid.lyh_revealed .lyh_box.lyh_pass::after {
+            display: none;
+        }
+
+        /* 底部规则说明 */
+        .lyh_rules {
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-top: 18px;
+            box-shadow: 0 6px 18px rgba(36, 79, 197, 0.07);
+        }
+        .lyh_rules h2 {
+            font-size: 1.05rem;
+            color: #244fc5;
+            margin-bottom: 10px;
+        }
+        .lyh_rules li {
+            list-style: none;
+            font-size: 0.9rem;
+            color: #5d6c89;
+            line-height: 1.9;
+            padding-left: 1.2em;
+            position: relative;
+        }
+        .lyh_rules li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.75em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #f59f00;
+        }
+        .lyh_rules code {
+            font-family: Consolas, monospace;
+            background: rgba(59, 108, 245, 0.1);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 0.85em;
+            color: #244fc5;
+        }
+
+        @media (max-width: 560px) {
+            .lyh_grid {
+                gap: 5px;
+                padding: 10px;
+            }
+            .lyh_box {
+                font-size: 0.7rem;
+                border-width: 1px;
+                border-radius: 6px;
+            }
+            .lyh_box.lyh_pass::after {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lyh_wrap">
+        <header class="lyh_header">
+            <h1>数七游戏 · 一百个盒子</h1>
+            <p>逢 7 必过：7 的倍数、个位是 7、十位是 7 的数字都要"过"<br>
+               满足规则的显示<b>空盒子</b>（橙色虚线），其余正常显示数字，悬停空盒子可查看</p>
+        </header>
+
+        <div class="lyh_toolbar">
+            <div class="lyh_stat">
+                显示数字 <b id="lyh_count-num">0</b> 个 ·
+                <span class="lyh_stat-pass">需要"过" <b id="lyh_count-pass">0</b> 个</span>
+            </div>
+            <button class="lyh_btn lyh_btn-reveal" id="lyh_btn-reveal" onclick="lyh_toggleReveal()">揭示全部数字</button>
+        </div>
+
+        <div class="lyh_legend">
+            <span><i class="lyh_dot lyh_dot-num"></i>普通数字（不满足规则）</span>
+            <span><i class="lyh_dot lyh_dot-pass"></i>空盒子（满足规则，悬停可查看）</span>
+        </div>
+
+        <div class="lyh_grid" id="lyh_grid"></div>
+
+        <div class="lyh_rules">
+            <h2>判断规则（数七）</h2>
+            <ul>
+                <li>7 的倍数：<code>n % 7 === 0</code>，如 7、14、21、28…</li>
+                <li>个位是 7：<code>n % 10 === 7</code>，如 7、17、27、37…</li>
+                <li>十位是 7：<code>Math.floor(n / 10) === 7</code>，如 70～79</li>
+                <li>三者满足任意一条即为"过"，该盒子显示为空；悬停或点击"揭示全部数字"可查看被隐藏的数</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var lyh_grid = document.getElementById("lyh_grid");
+            var lyh_numCount = 0;
+            var lyh_passCount = 0;
+
+            // 生成 1~100 号盒子
+            for (var lyh_i = 1; lyh_i <= 100; lyh_i++) {
+                var lyh_isPass = lyh_hitSeven(lyh_i);
+                var lyh_box = document.createElement("div");
+
+                lyh_box.className = lyh_isPass ? "lyh_box lyh_pass" : "lyh_box";
+                lyh_box.textContent = lyh_isPass ? "" : lyh_i;
+                lyh_box.title = lyh_isPass ? lyh_i + " → 逢7过" : String(lyh_i);
+
+                if (lyh_isPass) {
+                    lyh_passCount++;
+                } else {
+                    lyh_numCount++;
+                }
+                lyh_grid.appendChild(lyh_box);
+            }
+
+            // 数七判断：7 的倍数 / 个位 7 / 十位 7
+            function lyh_hitSeven(lyh_n) {
+                return lyh_n % 7 === 0 ||
+                       lyh_n % 10 === 7 ||
+                       Math.floor(lyh_n / 10) === 7;
+            }
+
+            // 统计回填
+            document.getElementById("lyh_count-num").textContent = lyh_numCount;
+            document.getElementById("lyh_count-pass").textContent = lyh_passCount;
+
+            // 揭示 / 还原切换
+            window.lyh_toggleReveal = function () {
+                var lyh_revealed = lyh_grid.classList.toggle("lyh_revealed");
+                document.getElementById("lyh_btn-reveal").textContent =
+                    lyh_revealed ? "还原为空盒子" : "揭示全部数字";
+            };
+        })();
+    </script>
+</body>
+</html>

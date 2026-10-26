@@ -63,3 +63,48 @@
 
 - model: opencode/mimo-v2.6-flash-free
 - prompt: 创建trae的skill，根据给定文件
+
+## 2026-10-22 14:02
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 帮我提交项目
+
+## 2026-10-22 14:03
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 创建opencode的skill
+
+## 2026-10-22 14:25
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 设置项目规则，所有变量名称、css类，id名称都以lyh_开始，所有html页面中都包括注释、姓名、日期、功能名称
+
+## 2026-10-22 14:28
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 好的，执行吧
+
+## 2026-10-22 14:33
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 完成网页14.2-html,演示javascript基本的六种数据类型
+
+## 2026-10-22 14:44
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 设置项目规则，使用原生的html、css和javascript实现，图标使用font目录下的iconfont图标，不适用第三方库和cdn
+
+## 2026-10-26 13:34
+
+- model: GLM-5.3-Flash
+- prompt: 编写15-1.html，一百个盒子，里面有数字，按照数7的规则（7的倍数，个位数为7的数字等），不满足要求的显示数字，满足要求的显示空盒子
+
+## 2026-10-26 13:41
+
+- model: GLM-5.3-Flash
+- prompt: 修改规则，再新建一个html文件时，都要加入注释，注释包括：梁月虹，建立时间，使用的大模型，功能名称
+
+## 2026-10-26 14:08
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 创建技能skill：提交到github，提交commit和push整个项目到https://github.com/people229/lyh.git

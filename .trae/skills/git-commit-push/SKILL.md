@@ -15,7 +15,7 @@ Stage every change in the workspace, create a single commit with a concise Chine
 
 ## Procedure
 
-1. Run `git status --short --no-pager` to confirm there is something to commit. If the working tree is clean, skip to step 5 and report "没有需要提交的变更".
+1. Run `git status --short` to confirm there is something to commit. If the working tree is clean, skip to step 5 and report "没有需要提交的变更".
 2. Stage everything: `git add -A`
 3. Commit with a Chinese message: `git commit -m "<message>"`
    - `<message>` should briefly describe what changed, in Chinese. Examples:
