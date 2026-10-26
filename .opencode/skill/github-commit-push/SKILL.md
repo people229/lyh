@@ -46,4 +46,8 @@ separate `github` remote.
   do not pull, rebase, or merge automatically.
 - If authentication fails, report it and tell the user to configure GitHub
   credentials (PAT or SSH) instead of retrying blindly.
+- On Windows, if push fails with `SSL certificate ... unable to get local issuer
+  certificate`, retry once with the native Windows certificate store:
+  `git -c http.sslBackend=schannel push github main`. Do not disable SSL
+  verification globally.
 - Windows PowerShell environment: use `cmd1; if ($?) { cmd2 }` for dependent steps.
