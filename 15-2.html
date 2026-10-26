@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!--
+  姓名: 梁月虹
+  建立时间: 2026-10-26 14:43
+  使用大模型: GLM-5.3-Flash
+  功能: JavaScript 程序结构演示，包含条件结构（if-else、switch、三元运算符）与循环结构（for、while、do-while、嵌套循环）
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-2 JavaScript 程序结构：条件与循环</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            background: linear-gradient(160deg, #eef3ff, #e9fbf4);
+            color: #24324a;
+            min-height: 100vh;
+            padding: 30px 16px 60px;
+        }
+
+        .lyh_wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* 顶部说明 */
+        .lyh_header {
+            background: linear-gradient(135deg, #3b6cf5, #2fb98b);
+            color: #fff;
+            border-radius: 18px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 14px 34px rgba(47, 106, 245, 0.22);
+            margin-bottom: 22px;
+        }
+        .lyh_header h1 {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+        }
+        .lyh_header p {
+            font-size: 0.95rem;
+            opacity: 0.93;
+            line-height: 1.7;
+        }
+
+        /* 章节卡片 */
+        .lyh_section {
+            background: #fff;
+            border: 1px solid rgba(59, 108, 245, 0.14);
+            border-radius: 16px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 22px rgba(36, 79, 197, 0.08);
+        }
+        .lyh_section h2 {
+            font-size: 1.2rem;
+            color: #244fc5;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lyh_tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #3b6cf5, #6a5df5);
+            border-radius: 999px;
+            padding: 3px 10px;
+            letter-spacing: 1px;
+        }
+        .lyh_section > p {
+            font-size: 0.9rem;
+            color: #5d6c89;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        /* 代码块 */
+        .lyh_code {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin-bottom: 12px;
+        }
+        .lyh_code .lyh_kw   { color: #f472b6; }
+        .lyh_code .lyh_str  { color: #86efac; }
+        .lyh_code .lyh_num  { color: #fcd34d; }
+        .lyh_code .lyh_cmt  { color: #64748b; font-style: italic; }
+
+        .lyh_btn {
+            border: none;
+            border-radius: 8px;
+            padding: 9px 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: #fff;
+            background: #3b6cf5;
+            transition: background 0.15s ease, transform 0.1s ease;
+        }
+        .lyh_btn:hover {
+            background: #244fc5;
+            transform: translateY(-1px);
+        }
+        .lyh_btn.lyh_btn-green {
+            background: #2fb98b;
+        }
+        .lyh_btn.lyh_btn-green:hover {
+            background: #23956f;
+        }
+        .lyh_btn.lyh_btn-orange {
+            background: #e8590c;
+        }
+        .lyh_btn.lyh_btn-orange:hover {
+            background: #c94a08;
+        }
+
+        /* 条件结构演示区 */
+        .lyh_demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .lyh_input {
+            border: 2px solid #c9d6f5;
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 0.95rem;
+            width: 140px;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .lyh_input:focus {
+            border-color: #3b6cf5;
+        }
+        .lyh_result {
+            font-size: 0.92rem;
+            background: rgba(47, 185, 139, 0.1);
+            border-left: 3px solid #2fb98b;
+            border-radius: 6px;
+            padding: 9px 14px;
+            color: #1b6e51;
+            min-height: 1.4em;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* 控制台输出区 */
+        .lyh_console {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .lyh_console-title {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        #lyh_console-out {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            padding: 12px 14px;
+            border-radius: 8px;
+            min-height: 120px;
+            max-height: 260px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* 九九乘法表 */
+        .lyh_table {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 6px;
+            margin-top: 14px;
+        }
+        .lyh_cell {
+            background: #eef3ff;
+            border: 1px solid rgba(59, 108, 245, 0.2);
+            border-radius: 6px;
+            font-size: 0.72rem;
+            color: #244fc5;
+            text-align: center;
+            padding: 6px 2px;
+            font-family: Consolas, monospace;
+            transition: transform 0.12s ease, background 0.12s ease;
+        }
+        .lyh_cell:hover {
+            transform: scale(1.1);
+            background: #3b6cf5;
+            color: #fff;
+            z-index: 2;
+            position: relative;
+        }
+
+        @media (max-width: 560px) {
+            .lyh_header { padding: 22px 16px; }
+            .lyh_table { gap: 3px; }
+            .lyh_cell { font-size: 0.55rem; padding: 4px 1px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lyh_wrap">
+        <header class="lyh_header">
+            <h1>JavaScript 程序结构 · 条件与循环</h1>
+            <p>三大流程控制结构：顺序 → 条件（分支）→ 循环<br>
+               点击各演示按钮，运行结果会输出到底部控制台</p>
+        </header>
+
+        <!-- 一、条件结构 if-else -->
+        <section class="lyh_section">
+            <h2><span class="lyh_tag">条件 1</span>if-else 双分支 / 多分支</h2>
+            <p>输入一个 0~100 的分数，程序按多分支判断输出等级：≥90 优秀，≥80 良好，≥60 及格，否则不及格。</p>
+            <div class="lyh_code"><span class="lyh_cmt">// if - else if - else 多分支</span>
+<span class="lyh_kw">if</span> (lyh_score &gt;= <span class="lyh_num">90</span>) {
+    lyh_grade = <span class="lyh_str">"优秀"</span>;
+} <span class="lyh_kw">else if</span> (lyh_score &gt;= <span class="lyh_num">80</span>) {
+    lyh_grade = <span class="lyh_str">"良好"</span>;
+} <span class="lyh_kw">else if</span> (lyh_score &gt;= <span class="lyh_num">60</span>) {
+    lyh_grade = <span class="lyh_str">"及格"</span>;
+} <span class="lyh_kw">else</span> {
+    lyh_grade = <span class="lyh_str">"不及格"</span>;
+}</div>
+            <div class="lyh_demo-row">
+                <input type="number" class="lyh_input" id="lyh_score-input" min="0" max="100" placeholder="输入分数">
+                <button class="lyh_btn" onclick="lyh_judgeScore()">判断等级</button>
+                <div class="lyh_result" id="lyh_score-result">等待输入…</div>
+            </div>
+        </section>
+
+        <!-- 二、switch 结构 -->
+        <section class="lyh_section">
+            <h2><span class="lyh_tag">条件 2</span>switch 多值匹配</h2>
+            <p>switch 适合对一个变量的多个离散取值做精确匹配，break 防止 case 穿透。</p>
+            <div class="lyh_code"><span class="lyh_kw">switch</span> (lyh_day) {
+    <span class="lyh_kw">case</span> <span class="lyh_num">1</span>: lyh_name = <span class="lyh_str">"星期一"</span>; <span class="lyh_kw">break</span>;
+    <span class="lyh_kw">case</span> <span class="lyh_num">2</span>: lyh_name = <span class="lyh_str">"星期二"</span>; <span class="lyh_kw">break</span>;
+    ...
+    <span class="lyh_kw">default</span>: lyh_name = <span class="lyh_str">"输入有误"</span>;
+}</div>
+            <div class="lyh_demo-row">
+                <input type="number" class="lyh_input" id="lyh_day-input" min="1" max="7" placeholder="输入1~7">
+                <button class="lyh_btn lyh_btn-green" onclick="lyh_switchDay()">switch 匹配星期</button>
+                <div class="lyh_result" id="lyh_day-result">等待输入…</div>
+            </div>
+        </section>
+
+        <!-- 三、循环结构 -->
+        <section class="lyh_section">
+            <h2><span class="lyh_tag">循环</span>for / while / do-while 三种循环</h2>
+            <p>for 适合已知次数；while 先判断后执行；do-while 先执行一次再判断（至少执行 1 次）。</p>
+            <div class="lyh_code"><span class="lyh_cmt">// for：1~100 累加</span>
+<span class="lyh_kw">for</span> (<span class="lyh_kw">var</span> lyh_i = <span class="lyh_num">1</span>; lyh_i &lt;= <span class="lyh_num">100</span>; lyh_i++) {
+    lyh_sum += lyh_i;
+}
+
+<span class="lyh_cmt">// while：先判断后执行</span>
+<span class="lyh_kw">while</span> (lyh_n &lt;= <span class="lyh_num">5</span>) { lyh_n++; }
+
+<span class="lyh_cmt">// do-while：先执行一次再判断</span>
+<span class="lyh_kw">do</span> { lyh_m++; } <span class="lyh_kw">while</span> (lyh_m &lt; <span class="lyh_num">5</span>);</div>
+            <div class="lyh_demo-row">
+                <button class="lyh_btn" onclick="lyh_runFor()">for：1~100 累加</button>
+                <button class="lyh_btn lyh_btn-green" onclick="lyh_runWhile()">while：5 的阶乘</button>
+                <button class="lyh_btn lyh_btn-orange" onclick="lyh_runDoWhile()">do-while：至少执行一次</button>
+            </div>
+        </section>
+
+        <!-- 四、嵌套循环 -->
+        <section class="lyh_section">
+            <h2><span class="lyh_tag">嵌套</span>双重 for 循环 · 九九乘法表</h2>
+            <p>外层循环控制行，内层循环控制列，是嵌套循环最经典的应用。</p>
+            <div class="lyh_code"><span class="lyh_kw">for</span> (<span class="lyh_kw">var</span> lyh_i = <span class="lyh_num">1</span>; lyh_i &lt;= <span class="lyh_num">9</span>; lyh_i++) {          <span class="lyh_cmt">// 外层：行</span>
+    <span class="lyh_kw">for</span> (<span class="lyh_kw">var</span> lyh_j = <span class="lyh_num">1</span>; lyh_j &lt;= lyh_i; lyh_j++) {   <span class="lyh_cmt">// 内层：列</span>
+        <span class="lyh_cmt">// 输出 lyh_j × lyh_i = lyh_j*lyh_i</span>
+    }
+}</div>
+            <button class="lyh_btn" onclick="lyh_runTable()">生成九九乘法表</button>
+            <div class="lyh_table" id="lyh_table"></div>
+        </section>
+
+        <!-- 控制台 -->
+        <div class="lyh_console">
+            <div class="lyh_console-title">📋 运行结果控制台</div>
+            <div id="lyh_console-out">// 点击上方各按钮，结果输出到这里</div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var lyh_out = document.getElementById("lyh_console-out");
+            var lyh_first = true;
+
+            // 向控制台追加一行输出
+            function lyh_log(lyh_text) {
+                if (lyh_first) {
+                    lyh_out.textContent = "";
+                    lyh_first = false;
+                }
+                lyh_out.textContent += lyh_text + "\n";
+                lyh_out.scrollTop = lyh_out.scrollHeight;
+            }
+
+            /* ========== 一、if-else 多分支 ========== */
+            window.lyh_judgeScore = function () {
+                var lyh_score = Number(document.getElementById("lyh_score-input").value);
+                var lyh_res = document.getElementById("lyh_score-result");
+                var lyh_grade;
+
+                if (isNaN(lyh_score) || lyh_score < 0 || lyh_score > 100) {
+                    lyh_res.textContent = "请输入 0~100 之间的有效分数！";
+                    return;
+                }
+                if (lyh_score >= 90) {
+                    lyh_grade = "优秀";
+                } else if (lyh_score >= 80) {
+                    lyh_grade = "良好";
+                } else if (lyh_score >= 60) {
+                    lyh_grade = "及格";
+                } else {
+                    lyh_grade = "不及格";
+                }
+                lyh_res.textContent = "分数 " + lyh_score + " → 等级：" + lyh_grade;
+                lyh_log("[if-else] 分数 " + lyh_score + " → 等级：" + lyh_grade);
+            };
+
+            /* ========== 二、switch 多值匹配 ========== */
+            window.lyh_switchDay = function () {
+                var lyh_day = Number(document.getElementById("lyh_day-input").value);
+                var lyh_res = document.getElementById("lyh_day-result");
+                var lyh_name;
+
+                switch (lyh_day) {
+                    case 1: lyh_name = "星期一"; break;
+                    case 2: lyh_name = "星期二"; break;
+                    case 3: lyh_name = "星期三"; break;
+                    case 4: lyh_name = "星期四"; break;
+                    case 5: lyh_name = "星期五"; break;
+                    case 6: lyh_name = "星期六"; break;
+                    case 7: lyh_name = "星期日"; break;
+                    default: lyh_name = "输入有误（请输入 1~7）";
+                }
+                lyh_res.textContent = lyh_name;
+                lyh_log("[switch] 输入 " + lyh_day + " → " + lyh_name);
+            };
+
+            /* ========== 三、for 循环：1~100 累加 ========== */
+            window.lyh_runFor = function () {
+                var lyh_sum = 0;
+                var lyh_steps = [];
+                for (var lyh_i = 1; lyh_i <= 100; lyh_i++) {
+                    lyh_sum += lyh_i;
+                    if (lyh_i <= 3 || lyh_i === 100) {
+                        lyh_steps.push("  第 " + lyh_i + " 轮：sum = " + lyh_sum);
+                    }
+                }
+                lyh_log("[for] 1+2+...+100 = " + lyh_sum);
+                lyh_log(lyh_steps.join("\n"));
+            };
+
+            /* ========== 三、while 循环：5 的阶乘 ========== */
+            window.lyh_runWhile = function () {
+                var lyh_n = 1;
+                var lyh_fact = 1;
+                var lyh_steps = [];
+                while (lyh_n <= 5) {
+                    lyh_fact *= lyh_n;
+                    lyh_steps.push("  乘到 " + lyh_n + "：result = " + lyh_fact);
+                    lyh_n++;
+                }
+                lyh_log("[while] 5! = 1×2×3×4×5 = " + lyh_fact);
+                lyh_log(lyh_steps.join("\n"));
+            };
+
+            /* ========== 三、do-while：至少执行一次 ========== */
+            window.lyh_runDoWhile = function () {
+                var lyh_m = 100;          // 条件一开始就不成立
+                var lyh_count = 0;
+                do {
+                    lyh_count++;          // 仍会先执行一次
+                } while (lyh_m < 5);
+                lyh_log("[do-while] 条件 100 < 5 不成立，循环体仍执行了 " +
+                        lyh_count + " 次 —— 这就是 do-while 与 while 的区别");
+            };
+
+            /* ========== 四、嵌套循环：九九乘法表 ========== */
+            window.lyh_runTable = function () {
+                var lyh_table = document.getElementById("lyh_table");
+                lyh_table.innerHTML = "";
+                for (var lyh_i = 1; lyh_i <= 9; lyh_i++) {
+                    for (var lyh_j = 1; lyh_j <= lyh_i; lyh_j++) {
+                        var lyh_cell = document.createElement("div");
+                        lyh_cell.className = "lyh_cell";
+                        lyh_cell.textContent = lyh_j + "×" + lyh_i + "=" + (lyh_i * lyh_j);
+                        lyh_table.appendChild(lyh_cell);
+                    }
+                }
+                lyh_log("[嵌套for] 九九乘法表已生成，共 " + (9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1) + " 个算式");
+            };
+        })();
+    </script>
+</body>
+</html>
