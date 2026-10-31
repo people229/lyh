@@ -113,3 +113,49 @@
 
 - model: GLM-5.3-Flash
 - prompt: 完成15-2.html，展示javascrip程序结构：循环，条件，提交到GitHub：`https://github.com/people229/lyh.git`
+
+## 2026-10-26 22:14
+
+- model: DeepSeek-V4.1-Flash
+- prompt: 新建一个0-1.html,完美复刻我给你的图片中网页的样子，要一模一样，字也是，每一段话最后都加上426梁月虹，图片使用img下的com1和com2
+
+## 2026-10-26 22:24
+
+- model: DeepSeek-V4.1-Flash
+- prompt: 这不太一样把，上面是你给我做的，下面是原本的，嘴左边应该是带下黑框的，你懂我意思吧，然后SPA那部分应该是一个颜色和图片背景渐变，智慧办公和智慧教育背景颜色再还原一下
+
+## 2026-10-26 22:32
+
+- model: DeepSeek-V4.1-Flash
+- prompt: 数字化研发平台那块，深色半透明遮罩放文字，其他都不用再改
+
+
+## 2026-10-31 15:20
+
+- 模型: opencode/mimo-v2.6-flash-free
+- 提示词:
+
+> 完成16-1.html,展示javascript数组的主要方法，形象一些
+
+
+## 2026-10-31 15:20
+
+- 模型: opencode/mimo-v2.6-flash-free
+- 提示词:
+
+> 完成16-2.html,展示javascript对象
+
+## 2026-10-31 15:39
+
+- model: DeepSeek-V4.1-Flash
+- prompt: 完成16-3.html,使用的图标在font目录里选，完成的网页尽可能的和给定的图片相似
+
+## 2026-10-31 15:50
+
+- model: opencode/mimo-v2.6-flash-free
+- prompt: 完成16-4.html  仿照我给你的 @image#1:2.jpg @image#2:1.jpg 图片完成一个网页，要有tap选项卡（就是点那个就出现相应的内容），尽量做得一模一样
+
+## 2026-10-31 15:57
+
+- model: GLM-5.3-Flash
+- prompt: 帮我把今天新增的项目提交到github

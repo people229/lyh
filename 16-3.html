@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--
+  姓名: 梁月虹
+  建立时间: 2026-10-31 15:39
+  使用大模型: DeepSeek-V4.1-Flash
+  功能: 复刻右侧悬浮客服导航栏，包含桌面版、消息、购物车、官方客服、反馈、回顶部六个入口
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>右侧悬浮导航栏</title>
+    <link rel="stylesheet" href="./font/font_5244708_zkj0shedp19/iconfont.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+            background: #fbfbfb;
+            min-height: 100vh;
+            color: #333333;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 页面中部的浅色分隔线 */
+        .lyh_hline {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: calc(50% + 79px);
+            height: 1px;
+            background: #e6e6e6;
+            z-index: 1;
+        }
+
+        /* 右侧悬浮导航整体 */
+        .lyh_side-nav {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* 面板通用样式 */
+        .lyh_panel {
+            width: 68px;
+            background: #ffffff;
+            border-radius: 10px 0 0 10px;
+            box-shadow: -1px 2px 12px rgba(0, 0, 0, 0.07);
+            padding: 4px 0;
+        }
+
+        .lyh_item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 0;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333333;
+            transition: background 0.2s ease;
+        }
+        .lyh_item:hover {
+            background: #f5f6f8;
+        }
+
+        .lyh_icon {
+            font-size: 21px;
+            line-height: 21px;
+            margin-bottom: 5px;
+        }
+
+        .lyh_label {
+            font-size: 11px;
+            line-height: 12px;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        /* 回顶部单独面板 */
+        .lyh_panel-top {
+            padding: 6px 0;
+        }
+
+        @media (max-width: 600px) {
+            .lyh_panel {
+                width: 60px;
+            }
+            .lyh_icon {
+                font-size: 19px;
+                line-height: 19px;
+            }
+            .lyh_label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面分隔线 -->
+    <div class="lyh_hline"></div>
+
+    <!-- 右侧悬浮导航 -->
+    <nav class="lyh_side-nav">
+        <div class="lyh_panel">
+            <a class="lyh_item" href="javascript:void(0)" title="桌面版">
+                <i class="iconfont icon-diannao lyh_icon"></i>
+                <span class="lyh_label">桌面版</span>
+            </a>
+            <a class="lyh_item" href="javascript:void(0)" title="消息">
+                <i class="iconfont icon-xiaoxi lyh_icon"></i>
+                <span class="lyh_label">消息</span>
+            </a>
+            <a class="lyh_item" href="javascript:void(0)" title="购物车">
+                <i class="iconfont icon-ego-fav lyh_icon"></i>
+                <span class="lyh_label">购物车</span>
+            </a>
+            <a class="lyh_item" href="javascript:void(0)" title="官方客服">
+                <i class="iconfont icon-_fuwu lyh_icon"></i>
+                <span class="lyh_label">官方客服</span>
+            </a>
+            <a class="lyh_item" href="javascript:void(0)" title="反馈">
+                <i class="iconfont icon-bianji lyh_icon"></i>
+                <span class="lyh_label">反馈</span>
+            </a>
+        </div>
+
+        <div class="lyh_panel lyh_panel-top">
+            <a class="lyh_item" href="javascript:void(0)" title="回顶部"
+               onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+                <i class="iconfont icon-shengban-shengji lyh_icon"></i>
+                <span class="lyh_label">回顶部</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

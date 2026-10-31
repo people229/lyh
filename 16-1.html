@@ -1,0 +1,574 @@
+<!--
+  姓名: 梁月虹
+  建立时间: 2026-10-31 15:20
+  使用大模型: opencode/mimo-v2.6-flash-free
+  功能: 形象展示 JavaScript 数组的主要方法（push/pop/shift/unshift/splice/slice/reverse/sort/filter/map/find/includes）
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript 数组方法可视化</title>
+  <link rel="stylesheet" href="./font/font_5244708_zkj0shedp19/iconfont.css" />
+  <style>
+    :root {
+      --lyh-bg: #f4f6fb;
+      --lyh-card: #ffffff;
+      --lyh-primary: #4f46e5;
+      --lyh-primary-dark: #4338ca;
+      --lyh-accent: #06b6d4;
+      --lyh-ok: #10b981;
+      --lyh-warn: #f59e0b;
+      --lyh-danger: #ef4444;
+      --lyh-text: #111827;
+      --lyh-muted: #6b7280;
+      --lyh-shadow: 0 10px 30px rgba(79, 70, 229, 0.10);
+      --lyh-radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+      color: var(--lyh-text);
+      background: linear-gradient(135deg, #eef2ff, #fdfbfb);
+      min-height: 100vh;
+    }
+
+    .lyh_page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .lyh_header {
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: var(--lyh-radius);
+      background: linear-gradient(135deg, var(--lyh-primary), var(--lyh-primary-dark));
+      color: #fff;
+      box-shadow: var(--lyh-shadow);
+      margin-bottom: 30px;
+    }
+
+    .lyh_header .lyh_eyebrow {
+      display: inline-block;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+
+    .lyh_header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+    }
+
+    .lyh_header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+
+    .lyh_panel {
+      background: var(--lyh-card);
+      border-radius: var(--lyh-radius);
+      box-shadow: var(--lyh-shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .lyh_panel h2 {
+      margin: 0 0 16px;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--lyh-primary-dark);
+    }
+
+    /* 数组可视化区域 */
+    .lyh_array-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      min-height: 120px;
+    }
+
+    .lyh_array {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      border: 2px dashed #cbd5e1;
+      min-height: 90px;
+    }
+
+    .lyh_empty {
+      color: var(--lyh-muted);
+      font-style: italic;
+    }
+
+    .lyh_box {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      position: relative;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s, opacity 0.3s, filter 0.3s;
+      user-select: none;
+      opacity: 1;
+    }
+
+    .lyh_box::after {
+      content: attr(data-idx);
+      position: absolute;
+      top: -8px; left: -8px;
+      width: 18px; height: 18px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 50%;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .lyh_enter {
+      animation: lyh_popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .lyh_exit {
+      animation: lyh_popOut 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .lyh_swap {
+      animation: lyh_flip 0.5s ease both;
+    }
+
+    .lyh_highlight {
+      filter: brightness(1.25);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.9), 0 4px 14px rgba(0,0,0,0.15);
+      transform: scale(1.12);
+      z-index: 5;
+    }
+
+    .lyh_dim {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    .lyh_keep {
+      box-shadow: inset 0 0 0 3px var(--lyh-ok);
+      animation: lyh_keep 0.5s ease both;
+    }
+
+    .lyh_drop {
+      animation: lyh_drop 0.4s ease both;
+    }
+
+    @keyframes lyh_popIn {
+      from { opacity: 0; transform: scale(0.5) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes lyh_popOut {
+      to { opacity: 0; transform: scale(0.5) translateY(-20px); }
+    }
+
+    @keyframes lyh_flip {
+      0% { transform: rotateY(0) scale(1); }
+      50% { transform: rotateY(90deg) scale(1.05); }
+      100% { transform: rotateY(0) scale(1); }
+    }
+
+    @keyframes lyh_keep {
+      0% { box-shadow: inset 0 0 0 0 var(--lyh-ok); }
+      50% { box-shadow: inset 0 0 0 6px var(--lyh-ok); }
+      100% { box-shadow: inset 0 0 0 3px var(--lyh-ok); }
+    }
+
+    @keyframes lyh_drop {
+      to { opacity: 0.35; transform: scale(0.85) translateY(10px); }
+    }
+
+    /* 当前数组显示 */
+    .lyh_info {
+      font-size: 1.05rem;
+      color: var(--lyh-muted);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      word-break: break-all;
+      text-align: center;
+    }
+
+    .lyh_info strong { color: var(--lyh-primary); }
+
+    /* 工具栏 */
+    .lyh_toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .lyh_btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--lyh-text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+
+    .lyh_btn .lyh_icon {
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .lyh_btn .lyh_label { font-size: 0.88rem; }
+
+    .lyh_btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--lyh-primary);
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.12);
+    }
+
+    .lyh_btn:active { transform: translateY(0); }
+
+    .lyh_btn.add { border-color: var(--lyh-ok); color: var(--lyh-ok); }
+    .lyh_btn.add:hover { background: var(--lyh-ok); color: #fff; }
+    .lyh_btn.rem { border-color: var(--lyh-danger); color: var(--lyh-danger); }
+    .lyh_btn.rem:hover { background: var(--lyh-danger); color: #fff; }
+    .lyh_btn.info { border-color: var(--lyh-accent); color: var(--lyh-accent); }
+    .lyh_btn.info:hover { background: var(--lyh-accent); color: #fff; }
+    .lyh_btn.mut { border-color: var(--lyh-warn); color: var(--lyh-warn); }
+    .lyh_btn.mut:hover { background: var(--lyh-warn); color: #fff; }
+    .lyh_btn.reset { border-color: var(--lyh-muted); color: var(--lyh-muted); }
+    .lyh_btn.reset:hover { background: var(--lyh-muted); color: #fff; }
+
+    /* 代码与说明 */
+    .lyh_codebox {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      position: relative;
+    }
+
+    .lyh_code {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .lyh_code .kw { color: #c678dd; }
+    .lyh_code .str { color: #98c379; }
+    .lyh_code .num { color: #d19a66; }
+    .lyh_code .fn { color: #61afef; }
+    .lyh_code .comment { color: #5c6370; font-style: italic; }
+
+    .lyh_desc {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--lyh-muted);
+      text-align: center;
+      min-height: 1.4em;
+    }
+
+    .lyh_hint {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--lyh-muted);
+    }
+
+    .lyh_tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      background: #e0e7ff;
+      color: var(--lyh-primary-dark);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .lyh_page { padding: 16px 12px 40px; }
+      .lyh_box { width: 46px; height: 46px; font-size: 1rem; }
+      .lyh_toolbar { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lyh_page">
+    <header class="lyh_header">
+      <div class="lyh_eyebrow">JavaScript · 数组方法</div>
+      <h1>数组盒子实验室</h1>
+      <p>点击按钮，观察数组元素盒子如何变化</p>
+    </header>
+
+    <div class="lyh_panel">
+      <h2><i class="iconfont icon-diannao"></i> 当前数组</h2>
+      <div class="lyh_array-wrap">
+        <div class="lyh_array" id="lyh_array">
+          <div class="lyh_empty">数组为空，点击 push / unshift 添加元素</div>
+        </div>
+        <div class="lyh_info" id="lyh_info">当前数组：[]</div>
+      </div>
+    </div>
+
+    <div class="lyh_panel">
+      <h2><i class="iconfont icon-bianji"></i> 操作方法</h2>
+      <div class="lyh_tag">绿=增加 · 红=删除 · 青=查询 · 橙=变形</div>
+      <div class="lyh_toolbar">
+        <button class="lyh_btn add" onclick="lyh_cmd('push')">
+          <span class="lyh_icon iconfont icon-zengjia"></span>
+          <span class="lyh_label">push 尾部追加</span>
+        </button>
+        <button class="lyh_btn rem" onclick="lyh_cmd('pop')">
+          <span class="lyh_icon iconfont icon-shanchu"></span>
+          <span class="lyh_label">pop 尾部删除</span>
+        </button>
+        <button class="lyh_btn add" onclick="lyh_cmd('unshift')">
+          <span class="lyh_icon iconfont icon-zengjia"></span>
+          <span class="lyh_label">unshift 头部追加</span>
+        </button>
+        <button class="lyh_btn rem" onclick="lyh_cmd('shift')">
+          <span class="lyh_icon iconfont icon-shanchu"></span>
+          <span class="lyh_label">shift 头部删除</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('splice')">
+          <span class="lyh_icon iconfont icon-gengduo"></span>
+          <span class="lyh_label">splice 指定位置删改</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('slice')">
+          <span class="lyh_icon iconfont icon-faxian"></span>
+          <span class="lyh_label">slice 截取片段</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('reverse')">
+          <span class="lyh_icon iconfont icon-fanhui"></span>
+          <span class="lyh_label">reverse 顺序反转</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('sort')">
+          <span class="lyh_icon iconfont icon-shengban-shengji"></span>
+          <span class="lyh_label">sort 从小到大排序</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('filter')">
+          <span class="lyh_icon iconfont icon-faxian"></span>
+          <span class="lyh_label">filter 保留大于5</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('map')">
+          <span class="lyh_icon iconfont icon-gengduo"></span>
+          <span class="lyh_label">map 每元素×2</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('find')">
+          <span class="lyh_icon iconfont icon-sousuo"></span>
+          <span class="lyh_label">find 查找等于8</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('includes')">
+          <span class="lyh_icon iconfont icon-sousuo"></span>
+          <span class="lyh_label">includes 是否包含3</span>
+        </button>
+        <button class="lyh_btn reset" onclick="lyh_cmd('reset')">
+          <span class="lyh_icon iconfont icon-qingjielvhua"></span>
+          <span class="lyh_label">重置数组</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="lyh_panel">
+      <h2><i class="iconfont icon-denglu"></i> 代码示例</h2>
+      <div class="lyh_codebox">
+        <pre class="lyh_code" id="lyh_code"></pre>
+      </div>
+      <div class="lyh_desc" id="lyh_desc">选择一个方法开始体验</div>
+    </div>
+
+    <div class="lyh_hint">提示：splice 会弹出输入框，让你指定“删除起始位置”“删除个数”“插入的值”（可多个，逗号分隔）。</div>
+  </div>
+
+  <script>
+    (function () {
+      var lyh_arr = [3, 7, 2, 9, 5];
+
+      var lyh_colors = [
+        '#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ef4444',
+        '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#6366f1'
+      ];
+
+      var lyh_arrayEl = document.getElementById('lyh_array');
+      var lyh_infoEl = document.getElementById('lyh_info');
+      var lyh_codeEl = document.getElementById('lyh_code');
+      var lyh_descEl = document.getElementById('lyh_desc');
+
+      function lyh_colorFor(val, i) {
+        return lyh_colors[Math.abs(val) % lyh_colors.length];
+      }
+
+      function lyh_render(extraClassMap) {
+        extraClassMap = extraClassMap || {};
+        lyh_arrayEl.innerHTML = '';
+        if (lyh_arr.length === 0) {
+          lyh_arrayEl.innerHTML = '<div class="lyh_empty">数组为空，点击 push / unshift 添加元素</div>';
+          lyh_infoEl.textContent = '当前数组：[]';
+          return;
+        }
+        lyh_arr.forEach(function (val, i) {
+          var box = document.createElement('div');
+          box.className = 'lyh_box ' + (extraClassMap[i] || '');
+          box.style.background = lyh_colorFor(val, i);
+          box.setAttribute('data-idx', i);
+          box.textContent = val;
+          lyh_arrayEl.appendChild(box);
+        });
+        lyh_infoEl.innerHTML = '当前数组：<strong>[ ' + lyh_arr.join(', ') + ' ]</strong>';
+      }
+
+      function lyh_showCode(code, desc) {
+        lyh_codeEl.textContent = code;
+        lyh_descEl.textContent = desc;
+      }
+
+      function lyh_cmd(action) {
+        var code = '';
+        var desc = '';
+
+        if (action === 'push') {
+          lyh_arr.push(8);
+          code = 'var arr = [3, 7, 2, 9, 5];\narr.push(8);  // 数组尾部追加一个元素 8';
+          desc = 'push：在数组末尾添加元素，返回新长度（原数组被修改）。';
+        } else if (action === 'pop') {
+          if (lyh_arr.length === 0) { lyh_showCode('arr.pop();  // 空数组返回 undefined', 'pop：移除最后一个元素并返回它；空数组时返回 undefined。'); return; }
+          var removed = lyh_arr.pop();
+          code = 'var arr = [3, 7, 2, 9, 5];\nvar x = arr.pop();  // 移除最后一个元素，x = 5';
+          desc = 'pop：移除数组最后一个元素并返回该元素（原数组被修改，长度减 1）。';
+        } else if (action === 'unshift') {
+          lyh_arr.unshift(0);
+          code = 'var arr = [3, 7, 2, 9, 5];\narr.unshift(0);  // 数组开头插入元素 0';
+          desc = 'unshift：在数组开头添加元素，返回新长度（原数组被修改）。';
+        } else if (action === 'shift') {
+          if (lyh_arr.length === 0) { lyh_showCode('arr.shift();  // 空数组返回 undefined', 'shift：移除第一个元素并返回它；空数组时返回 undefined。'); return; }
+          var removed = lyh_arr.shift();
+          code = 'var arr = [3, 7, 2, 9, 5];\nvar x = arr.shift();  // 移除第一个元素，x = 3';
+          desc = 'shift：移除数组第一个元素并返回该元素（原数组被修改，后续元素前移）。';
+        } else if (action === 'splice') {
+          var start = prompt('删除起始下标（从 0 开始）：', '1');
+          if (start === null) return;
+          var delCount = prompt('删除几个元素？：', '1');
+          if (delCount === null) return;
+          var items = prompt('插入的值（多个用逗号分隔，留空则不插入）：', '');
+          var startN = parseInt(start, 10) || 0;
+          var delN = parseInt(delCount, 10) || 0;
+          var insert = items.trim() ? items.split(',').map(function (s) { return parseInt(s.trim(), 10); }) : [];
+          var args = [startN, delN].concat(insert);
+          var removed = lyh_arr.splice.apply(lyh_arr, args);
+          code = 'var arr = [3, 7, 2, 9, 5];\narr.splice(' + startN + ', ' + delN + (insert.length ? ', ' + insert.join(', ') : '') + ');';
+          desc = 'splice：从下标 ' + startN + ' 处删除 ' + delN + ' 个元素，并可插入新元素（原数组被修改，返回被删除的元素）。';
+        } else if (action === 'slice') {
+          var sub = lyh_arr.slice(1, 4);
+          code = 'var arr = [3, 7, 2, 9, 5];\nvar sub = arr.slice(1, 4);  // 截取下标 1 到 3 的元素';
+          desc = 'slice：截取数组片段（不包含结束下标），返回新数组，原数组不变。';
+          lyh_render({ 0: 'lyh_drop', 4: 'lyh_drop' });
+          setTimeout(function () { lyh_render(); }, 700);
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'reverse') {
+          lyh_arr.reverse();
+          code = 'var arr = [3, 7, 2, 9, 5];\narr.reverse();  // 数组顺序完全反转';
+          desc = 'reverse：将数组顺序颠倒（原数组被修改）。';
+          lyh_render({ class: 'lyh_swap' });
+          return;
+        } else if (action === 'sort') {
+          lyh_arr.sort(function (a, b) { return a - b; });
+          code = 'var arr = [3, 7, 2, 9, 5];\narr.sort((a, b) => a - b);  // 按数字从小到大排序';
+          desc = 'sort：对数组元素排序（原数组被修改）。传比较函数可实现数字排序。';
+          lyh_render({ class: 'lyh_swap' });
+          return;
+        } else if (action === 'filter') {
+          var kept = lyh_arr.filter(function (v) { return v > 5; });
+          code = 'var arr = [3, 7, 2, 9, 5];\nvar kept = arr.filter(v => v > 5);  // 只保留大于 5 的元素';
+          desc = 'filter：根据条件过滤元素，返回满足条件的新数组，原数组不变。';
+          lyh_arr.forEach(function (v, i) {
+            if (v <= 5) { /* mark drop via render below */ }
+          });
+          var marks = {};
+          lyh_arr.forEach(function (v, i) { if (v <= 5) marks[i] = 'lyh_drop'; else marks[i] = 'lyh_keep'; });
+          lyh_render(marks);
+          setTimeout(function () { lyh_render(); }, 900);
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'map') {
+          var mapped = lyh_arr.map(function (v) { return v * 2; });
+          code = 'var arr = [3, 7, 2, 9, 5];\nvar doubled = arr.map(v => v * 2);  // 每个元素乘以 2';
+          desc = 'map：对每个元素执行操作，返回结果组成的新数组，原数组不变。';
+          lyh_render({ class: 'lyh_highlight' });
+          setTimeout(function () { lyh_render(); }, 700);
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'find') {
+          var found = lyh_arr.find(function (v) { return v === 8; });
+          code = 'var arr = [3, 7, 2, 9, 5];\nvar x = arr.find(v => v === 8);  // 找到第一个等于 8 的元素';
+          desc = 'find：返回数组中满足条件的第一个元素，找不到则返回 undefined，原数组不变。';
+          var idx = lyh_arr.indexOf(8);
+          var marks = {};
+          if (idx >= 0) marks[idx] = 'lyh_highlight';
+          lyh_render(marks);
+          lyh_showCode(code, desc + (found !== undefined ? ' 找到的值：' + found : ' 未找到。'));
+          return;
+        } else if (action === 'includes') {
+          var has = lyh_arr.includes(3);
+          code = 'var arr = [3, 7, 2, 9, 5];\narr.includes(3);  // 判断数组是否包含元素 3';
+          desc = 'includes：判断数组是否包含某个值，返回 true 或 false，原数组不变。';
+          lyh_render({ class: has ? 'lyh_highlight' : 'lyh_dim' });
+          lyh_showCode(code, desc + ' 结果：' + has);
+          return;
+        } else if (action === 'reset') {
+          lyh_arr = [3, 7, 2, 9, 5];
+          code = 'var arr = [3, 7, 2, 9, 5];  // 重置为初始数组';
+          desc = '重置数组为初始示例 [3, 7, 2, 9, 5]。';
+          lyh_render();
+          lyh_showCode(code, desc);
+          return;
+        }
+
+        lyh_render();
+        lyh_showCode(code, desc);
+      }
+
+      lyh_render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--
+  姓名: 梁月虹
+  建立时间: 2026-10-26 22:14
+  使用大模型: DeepSeek-V4.1-Flash
+  功能: 复刻"解决方案"四宫格展示页面，包含数字化研发平台、SAP 基础架构解决方案、智慧教育、智慧办公四个模块
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解决方案</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 页面容器：与截图 1024 宽度下的版心一致 */
+        .lyh_page {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px 44px 70px;
+        }
+
+        /* 大标题 */
+        .lyh_title {
+            font-size: 29px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #111111;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #dcdcdc;
+            margin-bottom: 14px;
+        }
+
+        /* 四宫格 */
+        .lyh_grid {
+            display: grid;
+            grid-template-columns: 1fr 1.045fr 0.99fr;
+            grid-template-rows: 135px 147px;
+            width: 100%;
+        }
+
+        .lyh_card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lyh_pic {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 0;
+        }
+
+        .lyh_mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .lyh_text {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+        .lyh_text h3 {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            margin-bottom: 8px;
+        }
+
+        .lyh_text p {
+            font-size: 11.5px;
+            line-height: 1.9;
+            letter-spacing: 0.2px;
+        }
+
+        /* 左侧大图：数字化研发平台 */
+        .lyh_robot {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+        /* 文字底部深色半透明遮罩 */
+        .lyh_robot .lyh_mask {
+            top: auto;
+            bottom: 0;
+            height: 45%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .lyh_robot .lyh_text {
+            justify-content: flex-end;
+            padding: 18px 18px 15px;
+        }
+        .lyh_robot .lyh_text h3 {
+            color: #ffffff;
+        }
+        .lyh_robot .lyh_text p {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 11.5px;
+        }
+
+        /* 右上：SAP 基础架构解决方案 */
+        .lyh_sap {
+            grid-column: 2 / 4;
+            grid-row: 1 / 2;
+        }
+        .lyh_sap .lyh_mask {
+            background: linear-gradient(90deg,
+                rgba(30, 45, 63, 0.97) 0%,
+                rgba(32, 49, 69, 0.95) 45%,
+                rgba(34, 53, 75, 0.88) 65%,
+                rgba(36, 56, 80, 0.52) 82%,
+                rgba(38, 59, 84, 0.12) 96%,
+                rgba(38, 59, 84, 0) 100%);
+        }
+        .lyh_sap .lyh_text {
+            justify-content: flex-start;
+            padding: 24px 18px 18px;
+        }
+        .lyh_sap .lyh_text h3 {
+            color: #ffffff;
+        }
+        .lyh_sap .lyh_text p {
+            color: rgba(235, 242, 250, 0.92);
+            max-width: 400px;
+        }
+
+        /* 右下左：智慧教育 */
+        .lyh_edu {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            background: #f0eded;
+        }
+        .lyh_edu .lyh_text {
+            justify-content: flex-start;
+            padding: 17px 18px 18px;
+        }
+        .lyh_edu .lyh_text h3 {
+            color: #111111;
+        }
+        .lyh_edu .lyh_text p {
+            color: #6b6b6b;
+        }
+
+        /* 右下右：智慧办公 */
+        .lyh_office {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+            background: #d9e3f1;
+        }
+        .lyh_office .lyh_text {
+            justify-content: flex-start;
+            padding: 17px 18px 18px;
+        }
+        .lyh_office .lyh_text h3 {
+            color: #111111;
+        }
+        .lyh_office .lyh_text p {
+            color: #6b6b6b;
+        }
+
+        /* 响应式：平板 */
+        @media (max-width: 900px) {
+            .lyh_page {
+                padding: 22px 24px 60px;
+            }
+            .lyh_grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 260px 210px auto;
+            }
+            .lyh_robot {
+                grid-column: 1 / 3;
+                grid-row: 1 / 2;
+            }
+            .lyh_sap {
+                grid-column: 1 / 3;
+                grid-row: 2 / 3;
+            }
+            .lyh_edu {
+                grid-column: 1 / 2;
+                grid-row: 3 / 4;
+                min-height: 200px;
+            }
+            .lyh_office {
+                grid-column: 2 / 3;
+                grid-row: 3 / 4;
+                min-height: 200px;
+            }
+        }
+
+        /* 响应式：手机 */
+        @media (max-width: 600px) {
+            .lyh_page {
+                padding: 18px 16px 50px;
+            }
+            .lyh_title {
+                font-size: 24px;
+            }
+            .lyh_grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 230px 200px auto auto;
+            }
+            .lyh_robot {
+                grid-column: 1 / 2;
+                grid-row: 1 / 2;
+            }
+            .lyh_sap {
+                grid-column: 1 / 2;
+                grid-row: 2 / 3;
+            }
+            .lyh_edu {
+                grid-column: 1 / 2;
+                grid-row: 3 / 4;
+                min-height: 150px;
+            }
+            .lyh_office {
+                grid-column: 1 / 2;
+                grid-row: 4 / 5;
+                min-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lyh_page">
+        <h1 class="lyh_title">解决方案</h1>
+
+        <div class="lyh_grid">
+            <!-- 左：数字化研发平台 -->
+            <div class="lyh_card lyh_robot">
+                <img class="lyh_pic" src="./img/com-2.jpg" alt="数字化研发平台">
+                <div class="lyh_mask"></div>
+                <div class="lyh_text">
+                    <h3>数字化研发平台</h3>
+                    <p>解决数字化设计过程中大规模仿真和人际交互设计业务需求，为用户提供一个创新的“综合业务服务平台”426梁月虹</p>
+                </div>
+            </div>
+
+            <!-- 右上：SAP 基础架构解决方案 -->
+            <div class="lyh_card lyh_sap">
+                <img class="lyh_pic" src="./img/com-1.jpg" alt="SAP 基础架构解决方案">
+                <div class="lyh_mask"></div>
+                <div class="lyh_text">
+                    <h3>SAP 基础架构解决方案</h3>
+                    <p>提供满足SAP认证的基础架构解决方案来支持企业的SAP业务，为SAP应用及数据库提供出色的性能支持，为SAP业务平台的稳定性和连续性提供基于SAP最佳实践的服务保证。426梁月虹</p>
+                </div>
+            </div>
+
+            <!-- 右下左：智慧教育 -->
+            <div class="lyh_card lyh_edu">
+                <div class="lyh_text">
+                    <h3>智慧教育</h3>
+                    <p>联想教学教研 1+1+1解决方案 联想智慧教育秉持“科技至简 智慧为学”的理念，打造“教学教研 1+1解决方案”426梁月虹</p>
+                </div>
+            </div>
+
+            <!-- 右下右：智慧办公 -->
+            <div class="lyh_card lyh_office">
+                <div class="lyh_text">
+                    <h3>智慧办公</h3>
+                    <p>重磅办公 智见未来 以硬件、软件、服务一站式综合能力，为客户提供全场景智慧办公产品和方案，致力成为企业数字化转型首选Partner。426梁月虹</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

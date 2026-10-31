@@ -1,0 +1,313 @@
+<!--
+  姓名: 梁月虹
+  建立时间: 2026-10-31 15:50
+  使用大模型: opencode/mimo-v2.6-flash-free
+  功能: 股市行情排行选项卡（点击沪涨/沪跌/深涨/深跌切换对应内容面板）
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>16-4 股市行情选项卡</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: SimSun, "宋体", serif;
+        font-size: 12px;
+        background: #fff;
+        padding: 40px 0;
+      }
+
+      /* 整个行情小部件 */
+      .lyh_box {
+        width: 236px;
+        margin: 0 auto;
+        border: 1px solid #d0d0d0;
+        background: #fff;
+      }
+
+      /* 选项卡栏 */
+      .lyh_tabs {
+        display: flex;
+        background: #eeecec;
+        border-bottom: 1px solid #d0d0d0;
+      }
+
+      .lyh_tabs li {
+        flex: 1;
+        list-style: none;
+        text-align: center;
+        line-height: 26px;
+        height: 26px;
+        cursor: pointer;
+        color: #a40000;
+        font-weight: bold;
+        user-select: none;
+      }
+
+      .lyh_tabs li:hover {
+        color: #e60000;
+      }
+
+      /* 当前选中的选项卡：灰色块 */
+      .lyh_tabs li.lyh_cur {
+        background: #c6c6c6;
+        color: #a40000;
+      }
+
+      /* 内容面板 */
+      .lyh_panel {
+        display: none;
+      }
+
+      .lyh_panel.lyh_show {
+        display: block;
+      }
+
+      /* 每一行行情 */
+      .lyh_panel ul {
+        list-style: none;
+        padding: 2px 6px;
+      }
+
+      .lyh_panel li {
+        height: 24px;
+        line-height: 24px;
+        border-bottom: 1px solid #e8e8e8;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .lyh_panel li:last-child {
+        border-bottom: none;
+      }
+
+      .lyh_rank {
+        color: #333;
+      }
+
+      .lyh_name {
+        color: #333;
+      }
+
+      /* 数字列统一右对齐 */
+      .lyh_num {
+        float: right;
+        width: 46px;
+        text-align: right;
+      }
+
+      .lyh_pct {
+        width: 52px;
+      }
+
+      /* 上涨红色 */
+      .lyh_up {
+        color: #e60000;
+      }
+
+      /* 下跌绿色 */
+      .lyh_down {
+        color: #0a9c0a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="lyh_box">
+      <ul class="lyh_tabs" id="lyh_tabBar">
+        <li class="lyh_cur">沪涨</li>
+        <li>沪跌</li>
+        <li>深涨</li>
+        <li>深跌</li>
+      </ul>
+
+      <!-- 沪涨 -->
+      <div class="lyh_panel lyh_show">
+        <ul>
+          <li>
+            <span class="lyh_rank">1.</span>
+            <span class="lyh_name">斯太尔</span>
+            <span class="lyh_num lyh_up">8.88</span>
+            <span class="lyh_num lyh_up">+3.35</span>
+            <span class="lyh_num lyh_pct lyh_up">60.58%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">2.</span>
+            <span class="lyh_name">天津松江</span>
+            <span class="lyh_num lyh_up">8.16</span>
+            <span class="lyh_num lyh_up">+0.65</span>
+            <span class="lyh_num lyh_pct lyh_up">8.66%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">3.</span>
+            <span class="lyh_name">金瑞科技</span>
+            <span class="lyh_num lyh_up">8.79</span>
+            <span class="lyh_num lyh_up">+0.42</span>
+            <span class="lyh_num lyh_pct lyh_up">5.02%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">4.</span>
+            <span class="lyh_name">宏发股份</span>
+            <span class="lyh_num lyh_up">17.22</span>
+            <span class="lyh_num lyh_up">+0.82</span>
+            <span class="lyh_num lyh_pct lyh_up">5.00%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">5.</span>
+            <span class="lyh_name">杭齿前进</span>
+            <span class="lyh_num lyh_up">7.23</span>
+            <span class="lyh_num lyh_up">+0.34</span>
+            <span class="lyh_num lyh_pct lyh_up">4.93%</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 沪跌 -->
+      <div class="lyh_panel">
+        <ul>
+          <li>
+            <span class="lyh_rank">1.</span>
+            <span class="lyh_name">大湖股份</span>
+            <span class="lyh_num lyh_down">6.41</span>
+            <span class="lyh_num lyh_down">-0.71</span>
+            <span class="lyh_num lyh_pct lyh_down">-9.97%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">2.</span>
+            <span class="lyh_name">金山开发</span>
+            <span class="lyh_num lyh_down">9.02</span>
+            <span class="lyh_num lyh_down">-1.00</span>
+            <span class="lyh_num lyh_pct lyh_down">-9.98%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">3.</span>
+            <span class="lyh_name">中路股份</span>
+            <span class="lyh_num lyh_down">17.85</span>
+            <span class="lyh_num lyh_down">-1.98</span>
+            <span class="lyh_num lyh_pct lyh_down">-9.99%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">4.</span>
+            <span class="lyh_name">棱光实业</span>
+            <span class="lyh_num lyh_down">8.11</span>
+            <span class="lyh_num lyh_down">-0.90</span>
+            <span class="lyh_num lyh_pct lyh_down">-9.99%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">5.</span>
+            <span class="lyh_name">自仪股份</span>
+            <span class="lyh_num lyh_down">10.36</span>
+            <span class="lyh_num lyh_down">-1.15</span>
+            <span class="lyh_num lyh_pct lyh_down">-9.99%</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 深涨 -->
+      <div class="lyh_panel">
+        <ul>
+          <li>
+            <span class="lyh_rank">1.</span>
+            <span class="lyh_name">天顺风能</span>
+            <span class="lyh_num lyh_up">10.52</span>
+            <span class="lyh_num lyh_up">+0.96</span>
+            <span class="lyh_num lyh_pct lyh_up">10.04%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">2.</span>
+            <span class="lyh_name">兴源过滤</span>
+            <span class="lyh_num lyh_up">16.02</span>
+            <span class="lyh_num lyh_up">+1.46</span>
+            <span class="lyh_num lyh_pct lyh_up">10.03%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">3.</span>
+            <span class="lyh_name">北京君正</span>
+            <span class="lyh_num lyh_up">36.92</span>
+            <span class="lyh_num lyh_up">+3.36</span>
+            <span class="lyh_num lyh_pct lyh_up">10.01%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">4.</span>
+            <span class="lyh_name">美盛文化</span>
+            <span class="lyh_num lyh_up">32.87</span>
+            <span class="lyh_num lyh_up">+2.99</span>
+            <span class="lyh_num lyh_pct lyh_up">10.01%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">5.</span>
+            <span class="lyh_name">骅威股份</span>
+            <span class="lyh_num lyh_up">15.16</span>
+            <span class="lyh_num lyh_up">+1.38</span>
+            <span class="lyh_num lyh_pct lyh_up">10.01%</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 深跌 -->
+      <div class="lyh_panel">
+        <ul>
+          <li>
+            <span class="lyh_rank">1.</span>
+            <span class="lyh_name">金利科技</span>
+            <span class="lyh_num lyh_down">12.13</span>
+            <span class="lyh_num lyh_down">-1.35</span>
+            <span class="lyh_num lyh_pct lyh_down">-10.01%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">2.</span>
+            <span class="lyh_name">山东如意</span>
+            <span class="lyh_num lyh_down">9.27</span>
+            <span class="lyh_num lyh_down">-1.03</span>
+            <span class="lyh_num lyh_pct lyh_down">-10.00%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">3.</span>
+            <span class="lyh_name">同力水泥</span>
+            <span class="lyh_num lyh_down">14.49</span>
+            <span class="lyh_num lyh_down">-1.61</span>
+            <span class="lyh_num lyh_pct lyh_down">-10.00%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">4.</span>
+            <span class="lyh_name">科新机电</span>
+            <span class="lyh_num lyh_down">11.70</span>
+            <span class="lyh_num lyh_down">-1.30</span>
+            <span class="lyh_num lyh_pct lyh_down">-10.00%</span>
+          </li>
+          <li>
+            <span class="lyh_rank">5.</span>
+            <span class="lyh_name">山东章鼓</span>
+            <span class="lyh_num lyh_down">9.99</span>
+            <span class="lyh_num lyh_down">-1.11</span>
+            <span class="lyh_num lyh_pct lyh_down">-10.00%</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // 选项卡切换：点击哪个选项卡就显示对应的面板
+      var lyh_tabs = document.getElementById("lyh_tabBar").getElementsByTagName("li");
+      var lyh_panels = document.getElementsByClassName("lyh_panel");
+
+      for (var lyh_i = 0; lyh_i < lyh_tabs.length; lyh_i++) {
+        lyh_tabs[lyh_i].lyh_index = lyh_i;
+        lyh_tabs[lyh_i].onclick = function () {
+          for (var lyh_j = 0; lyh_j < lyh_tabs.length; lyh_j++) {
+            lyh_tabs[lyh_j].className = "";
+            lyh_panels[lyh_j].className = "lyh_panel";
+          }
+          this.className = "lyh_cur";
+          lyh_panels[this.lyh_index].className = "lyh_panel lyh_show";
+        };
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,573 @@
+<!--
+  姓名: 梁月虹
+  建立时间: 2026-10-31 15:29
+  使用大模型: opencode/mimo-v2.6-flash-free
+  功能: 形象展示 JavaScript 对象的创建、属性操作、方法、嵌套及常用 Object 静态方法
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript 对象可视化</title>
+  <link rel="stylesheet" href="./font/font_5244708_zkj0shedp19/iconfont.css" />
+  <style>
+    :root {
+      --lyh-bg: #f4f6fb;
+      --lyh-card: #ffffff;
+      --lyh-primary: #7c3aed;
+      --lyh-primary-dark: #6d28d9;
+      --lyh-accent: #06b6d4;
+      --lyh-ok: #10b981;
+      --lyh-warn: #f59e0b;
+      --lyh-danger: #ef4444;
+      --lyh-text: #111827;
+      --lyh-muted: #6b7280;
+      --lyh-shadow: 0 10px 30px rgba(124, 58, 237, 0.10);
+      --lyh-radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+      color: var(--lyh-text);
+      background: linear-gradient(135deg, #f3f4f6, #fdfbfb);
+      min-height: 100vh;
+    }
+
+    .lyh_page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .lyh_header {
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: var(--lyh-radius);
+      background: linear-gradient(135deg, var(--lyh-primary), var(--lyh-primary-dark));
+      color: #fff;
+      box-shadow: var(--lyh-shadow);
+      margin-bottom: 30px;
+    }
+
+    .lyh_header .lyh_eyebrow {
+      display: inline-block;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+
+    .lyh_header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+    }
+
+    .lyh_header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+
+    .lyh_panel {
+      background: var(--lyh-card);
+      border-radius: var(--lyh-radius);
+      box-shadow: var(--lyh-shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .lyh_panel h2 {
+      margin: 0 0 16px;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--lyh-primary-dark);
+    }
+
+    /* 对象可视化 */
+    .lyh_obj-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      min-height: 140px;
+    }
+
+    .lyh_obj {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      border: 2px dashed #cbd5e1;
+      min-height: 110px;
+      position: relative;
+    }
+
+    .lyh_empty {
+      color: var(--lyh-muted);
+      font-style: italic;
+    }
+
+    .lyh_prop {
+      position: relative;
+      width: 150px;
+      padding: 14px 10px 10px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, opacity 0.3s, filter 0.3s;
+      user-select: none;
+    }
+
+    .lyh_prop .lyh_key {
+      position: absolute;
+      top: -10px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .lyh_prop .lyh_val {
+      font-weight: 800;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      overflow-wrap: break-word;
+    }
+
+    .lyh_prop .lyh_type {
+      margin-top: auto;
+      font-size: 0.72rem;
+      opacity: 0.85;
+      font-style: italic;
+    }
+
+    .lyh_enter { animation: lyh_popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .lyh_exit { animation: lyh_popOut 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .lyh_highlight { filter: brightness(1.25); box-shadow: 0 0 0 4px rgba(255,255,255,0.9), 0 4px 14px rgba(0,0,0,0.15); transform: scale(1.08); z-index: 5; }
+    .lyh_dim { opacity: 0.45; filter: grayscale(1); }
+    .lyh_keep { box-shadow: inset 0 0 0 3px var(--lyh-ok); animation: lyh_keep 0.5s ease both; }
+    .lyh_drop { animation: lyh_drop 0.4s ease both; }
+
+    @keyframes lyh_popIn {
+      from { opacity: 0; transform: scale(0.5) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes lyh_popOut {
+      to { opacity: 0; transform: scale(0.5) translateY(-20px); }
+    }
+    @keyframes lyh_keep {
+      0% { box-shadow: inset 0 0 0 0 var(--lyh-ok); }
+      50% { box-shadow: inset 0 0 0 6px var(--lyh-ok); }
+      100% { box-shadow: inset 0 0 0 3px var(--lyh-ok); }
+    }
+    @keyframes lyh_drop {
+      to { opacity: 0.35; transform: scale(0.85) translateY(10px); }
+    }
+
+    .lyh_info {
+      font-size: 1.05rem;
+      color: var(--lyh-muted);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      word-break: break-all;
+      text-align: center;
+    }
+
+    /* 工具栏 */
+    .lyh_toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .lyh_btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--lyh-text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+
+    .lyh_btn .lyh_icon { font-size: 1.45rem; line-height: 1; }
+    .lyh_btn .lyh_label { font-size: 0.88rem; }
+
+    .lyh_btn:hover { transform: translateY(-2px); border-color: var(--lyh-primary); box-shadow: 0 8px 20px rgba(124, 58, 237, 0.12); }
+    .lyh_btn:active { transform: translateY(0); }
+
+    .lyh_btn.add { border-color: var(--lyh-ok); color: var(--lyh-ok); }
+    .lyh_btn.add:hover { background: var(--lyh-ok); color: #fff; }
+    .lyh_btn.rem { border-color: var(--lyh-danger); color: var(--lyh-danger); }
+    .lyh_btn.rem:hover { background: var(--lyh-danger); color: #fff; }
+    .lyh_btn.info { border-color: var(--lyh-accent); color: var(--lyh-accent); }
+    .lyh_btn.info:hover { background: var(--lyh-accent); color: #fff; }
+    .lyh_btn.mut { border-color: var(--lyh-warn); color: var(--lyh-warn); }
+    .lyh_btn.mut:hover { background: var(--lyh-warn); color: #fff; }
+    .lyh_btn.reset { border-color: var(--lyh-muted); color: var(--lyh-muted); }
+    .lyh_btn.reset:hover { background: var(--lyh-muted); color: #fff; }
+
+    /* 代码与说明 */
+    .lyh_codebox {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .lyh_code { margin: 0; white-space: pre-wrap; word-break: break-all; }
+    .lyh_code .kw { color: #c678dd; }
+    .lyh_code .str { color: #98c379; }
+    .lyh_code .num { color: #d19a66; }
+    .lyh_code .fn { color: #61afef; }
+    .lyh_code .comment { color: #5c6370; font-style: italic; }
+
+    .lyh_desc {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--lyh-muted);
+      text-align: center;
+      min-height: 1.4em;
+    }
+
+    .lyh_tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      background: #ede9fe;
+      color: var(--lyh-primary-dark);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .lyh_hint {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--lyh-muted);
+    }
+
+    @media (max-width: 600px) {
+      .lyh_page { padding: 16px 12px 40px; }
+      .lyh_prop { width: 120px; }
+      .lyh_toolbar { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lyh_page">
+    <header class="lyh_header">
+      <div class="lyh_eyebrow">JavaScript · 对象</div>
+      <h1>对象实验室</h1>
+      <p>点击按钮，观察对象属性与方法如何变化</p>
+    </header>
+
+    <div class="lyh_panel">
+      <h2><i class="iconfont icon-diannao"></i> 当前对象</h2>
+      <div class="lyh_obj-wrap">
+        <div class="lyh_obj" id="lyh_obj">
+          <div class="lyh_empty">对象为空，点击“重置对象”开始体验</div>
+        </div>
+        <div class="lyh_info" id="lyh_info">当前对象：{}</div>
+      </div>
+    </div>
+
+    <div class="lyh_panel">
+      <h2><i class="iconfont icon-bianji"></i> 属性操作</h2>
+      <div class="lyh_tag">绿=增 · 橙=改 · 红=删 · 青=查</div>
+      <div class="lyh_toolbar">
+        <button class="lyh_btn add" onclick="lyh_cmd('addProp')">
+          <span class="lyh_icon iconfont icon-zengjia"></span>
+          <span class="lyh_label">添加属性</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('editProp')">
+          <span class="lyh_icon iconfont icon-gengduo"></span>
+          <span class="lyh_label">修改属性值</span>
+        </button>
+        <button class="lyh_btn rem" onclick="lyh_cmd('deleteProp')">
+          <span class="lyh_icon iconfont icon-shanchu"></span>
+          <span class="lyh_label">删除属性</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('getProp')">
+          <span class="lyh_icon iconfont icon-sousuo"></span>
+          <span class="lyh_label">读取属性</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('addMethod')">
+          <span class="lyh_icon iconfont icon-zengjia"></span>
+          <span class="lyh_label">添加对象方法</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('callMethod')">
+          <span class="lyh_icon iconfont icon-faxian"></span>
+          <span class="lyh_label">调用对象方法</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('keys')">
+          <span class="lyh_icon iconfont icon-faxian"></span>
+          <span class="lyh_label">Object.keys</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('values')">
+          <span class="lyh_icon iconfont icon-faxian"></span>
+          <span class="lyh_label">Object.values</span>
+        </button>
+        <button class="lyh_btn info" onclick="lyh_cmd('entries')">
+          <span class="lyh_icon iconfont icon-faxian"></span>
+          <span class="lyh_label">Object.entries</span>
+        </button>
+        <button class="lyh_btn mut" onclick="lyh_cmd('nested')">
+          <span class="lyh_icon iconfont icon-diannao"></span>
+          <span class="lyh_label">嵌套对象</span>
+        </button>
+        <button class="lyh_btn reset" onclick="lyh_cmd('reset')">
+          <span class="lyh_icon iconfont icon-qingjielvhua"></span>
+          <span class="lyh_label">重置对象</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="lyh_panel">
+      <h2><i class="iconfont icon-denglu"></i> 代码示例</h2>
+      <div class="lyh_codebox">
+        <pre class="lyh_code" id="lyh_code"></pre>
+      </div>
+      <div class="lyh_desc" id="lyh_desc">选择一个操作开始体验</div>
+    </div>
+
+    <div class="lyh_hint">提示：点击属性卡片可直接查看该属性的键名、值与类型；嵌套对象展示为“地址卡”，点击可进入查看内部属性。</div>
+  </div>
+
+  <script>
+    (function () {
+      var lyh_obj = {
+        name: '小明',
+        age: 18,
+        city: '北京',
+        skill: '前端',
+        greet: function () { return '你好，我是 ' + this.name; }
+      };
+
+      var lyh_objEl = document.getElementById('lyh_obj');
+      var lyh_infoEl = document.getElementById('lyh_info');
+      var lyh_codeEl = document.getElementById('lyh_code');
+      var lyh_descEl = document.getElementById('lyh_desc');
+
+      var lyh_colors = ['#7c3aed', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+
+      function lyh_colorFor(key) {
+        var sum = 0;
+        for (var i = 0; i < key.length; i++) { sum += key.charCodeAt(i); }
+        return lyh_colors[sum % lyh_colors.length];
+      }
+
+      function lyh_typeOf(v) {
+        if (Array.isArray(v)) return '数组';
+        if (v === null) return 'null';
+        if (typeof v === 'function') return '函数';
+        return typeof v;
+      }
+
+      function lyh_render(marks, activeKey) {
+        marks = marks || {};
+        lyh_objEl.innerHTML = '';
+        var keys = Object.keys(lyh_obj);
+        if (keys.length === 0) {
+          lyh_objEl.innerHTML = '<div class="lyh_empty">对象为空，点击“重置对象”开始体验</div>';
+          lyh_infoEl.textContent = '当前对象：{}';
+          return;
+        }
+        keys.forEach(function (key) {
+          var val = lyh_obj[key];
+          var box = document.createElement('div');
+          box.className = 'lyh_prop ' + (marks[key] || '');
+          if (activeKey === key) box.classList.add('lyh_highlight');
+          box.style.background = lyh_colorFor(key);
+          box.setAttribute('data-key', key);
+          box.onclick = function () { lyh_showProp(key, val); };
+
+          var keyEl = document.createElement('div');
+          keyEl.className = 'lyh_key';
+          keyEl.textContent = key;
+
+          var valEl = document.createElement('div');
+          valEl.className = 'lyh_val';
+          if (typeof val === 'function') {
+            valEl.textContent = 'ƒ()';
+            valEl.title = val.toString();
+          } else if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+            valEl.textContent = '{…}';
+          } else {
+            valEl.textContent = String(val);
+          }
+
+          var typeEl = document.createElement('div');
+          typeEl.className = 'lyh_type';
+          typeEl.textContent = lyh_typeOf(val);
+
+          box.appendChild(keyEl);
+          box.appendChild(valEl);
+          box.appendChild(typeEl);
+          lyh_objEl.appendChild(box);
+        });
+        lyh_infoEl.innerHTML = '当前对象：<strong>' + JSON.stringify(lyh_obj, null, 0).slice(0, 200) + (JSON.stringify(lyh_obj).length > 200 ? '…' : '') + '</strong>';
+      }
+
+      function lyh_showProp(key, val) {
+        var code = 'var obj = ' + JSON.stringify(lyh_obj, null, 2) + ';\nvar x = obj.' + key + ';  // 访问属性 "' + key + '"';
+        var desc = '属性访问：使用点号 obj.' + key + ' 或方括号 obj["' + key + '"] 读取值。当前值：' + (typeof val === 'function' ? '[函数]' : JSON.stringify(val));
+        lyh_codeEl.textContent = code;
+        lyh_descEl.textContent = desc;
+        lyh_render({}, key);
+      }
+
+      function lyh_showCode(code, desc) {
+        lyh_codeEl.textContent = code;
+        lyh_descEl.textContent = desc;
+      }
+
+      function lyh_cmd(action) {
+        var code = '';
+        var desc = '';
+
+        if (action === 'addProp') {
+          var key = prompt('属性名（key）：', '爱好');
+          if (key === null || key.trim() === '') return;
+          var val = prompt('属性值（value）：', '编程');
+          if (val === null) return;
+          lyh_obj[key] = val;
+          code = 'var obj = {};\nobj.' + key + ' = ' + JSON.stringify(val) + ';  // 添加新属性';
+          desc = '添加属性：直接给不存在的属性赋值，会在对象中新增该属性（原对象被修改）。';
+        } else if (action === 'editProp') {
+          var keys = Object.keys(lyh_obj);
+          if (keys.length === 0) { lyh_showCode('obj.属性名 = 新值;  // 对象为空，无属性可修改', '修改属性：对象为空，没有可修改的属性。'); return; }
+          var key = prompt('要修改的属性名：', keys[0]);
+          if (key === null) return;
+          if (!(key in lyh_obj)) { lyh_showCode('obj.' + key + ' = 新值;  // 属性不存在，会新增而非修改', '修改属性：属性名不存在时会新增该属性。'); return; }
+          var val = prompt('新的属性值：', String(lyh_obj[key]));
+          if (val === null) return;
+          lyh_obj[key] = val;
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nobj.' + key + ' = ' + JSON.stringify(val) + ';  // 修改已有属性';
+          desc = '修改属性：给已存在的属性重新赋值，原对象被修改。';
+        } else if (action === 'deleteProp') {
+          var keys = Object.keys(lyh_obj);
+          if (keys.length === 0) { lyh_showCode('delete obj.属性名;  // 对象为空', '删除属性：对象为空，无属性可删除。'); return; }
+          var key = prompt('要删除的属性名：', keys[0]);
+          if (key === null) return;
+          if (!(key in lyh_obj)) { lyh_showCode('delete obj.' + key + ';  // 返回 false，属性不存在', '删除属性：属性不存在，delete 返回 false。'); return; }
+          var removed = lyh_obj[key];
+          delete lyh_obj[key];
+          code = 'var obj = ' + JSON.stringify({ [key]: removed, __rest: lyh_obj }) + ';\ndelete obj.' + key + ';  // 删除属性 "' + key + '"';
+          desc = '删除属性：delete 运算符移除对象属性，返回 true 表示删除成功，原对象被修改。';
+          lyh_render({ [key]: 'lyh_drop' });
+          setTimeout(function () { lyh_render(); lyh_showCode(code, desc); }, 500);
+          return;
+        } else if (action === 'getProp') {
+          var keys = Object.keys(lyh_obj);
+          if (keys.length === 0) { lyh_showCode('obj.属性名;  // 对象为空', '读取属性：对象为空，无属性可读取。'); return; }
+          var key = prompt('要读取的属性名：', keys[0]);
+          if (key === null) return;
+          var val = lyh_obj[key];
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nvar x = obj.' + key + ';  // 读取属性';
+          desc = '读取属性：obj.' + key + ' 或 obj["' + key + '"]，若属性不存在则返回 undefined。当前值：' + (typeof val === 'function' ? '[函数]' : (val === undefined ? 'undefined' : JSON.stringify(val)));
+          lyh_render({}, key);
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'addMethod') {
+          var name = prompt('方法名：', 'sayHi');
+          if (name === null || name.trim() === '') return;
+          lyh_obj[name] = function () { return '这是方法 ' + name + ' 的返回值'; };
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nobj.' + name + ' = function() { return \'...\'; };  // 添加方法';
+          desc = '添加方法：将函数赋值给对象属性，该属性成为对象的方法，可通过 obj.' + name + '() 调用。';
+        } else if (action === 'callMethod') {
+          var methodNames = Object.keys(lyh_obj).filter(function (k) { return typeof lyh_obj[k] === 'function'; });
+          if (methodNames.length === 0) { lyh_showCode('obj.方法名();  // 对象没有方法', '调用方法：对象中没有可调用的方法。'); return; }
+          var name = methodNames[0];
+          var result = lyh_obj[name]();
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nvar res = obj.' + name + '();  // 调用方法';
+          desc = '调用方法：obj.' + name + '()，函数内部的 this 指向调用它的对象 obj。返回值：' + JSON.stringify(result);
+          lyh_render({}, name);
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'keys') {
+          var ks = Object.keys(lyh_obj);
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nObject.keys(obj);  // 获取所有属性名';
+          desc = 'Object.keys()：返回对象所有可枚举属性名组成的数组：[' + ks.map(function (k) { return '"' + k + '"'; }).join(', ') + ']';
+          lyh_render({ class: 'lyh_keep' });
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'values') {
+          var vs = Object.values(lyh_obj);
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nObject.values(obj);  // 获取所有属性值';
+          desc = 'Object.values()：返回对象所有可枚举属性值组成的数组。';
+          lyh_render({ class: 'lyh_highlight' });
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'entries') {
+          var es = Object.entries(lyh_obj);
+          code = 'var obj = ' + JSON.stringify(lyh_obj) + ';\nObject.entries(obj);  // 获取 [键, 值] 二维数组';
+          desc = 'Object.entries()：返回 [属性名, 属性值] 组成的二维数组，适合配合 for...of 或 Map 使用。';
+          lyh_render({ class: 'lyh_keep' });
+          lyh_showCode(code, desc);
+          return;
+        } else if (action === 'nested') {
+          lyh_obj = {
+            user: { name: '小明', age: 18 },
+            address: { city: '北京', district: '朝阳区' },
+            scores: { math: 90, english: 85 }
+          };
+          code = 'var obj = {\n  user: { name: \'小明\', age: 18 },\n  address: { city: \'北京\', district: \'朝阳区\' },\n  scores: { math: 90, english: 85 }\n};\nobj.user.name;  // \'小明\'';
+          desc = '嵌套对象：对象的属性值可以是另一个对象，通过 obj.user.name 逐级访问嵌套属性。';
+        } else if (action === 'reset') {
+          lyh_obj = { name: '小明', age: 18, city: '北京', skill: '前端', greet: function () { return '你好，我是 ' + this.name; } };
+          code = 'var obj = { name: \'小明\', age: 18, city: \'北京\', skill: \'前端\' };\nobj.greet = function() { return \'你好，我是\' + this.name; };';
+          desc = '重置对象为初始示例，包含字符串、数字及函数类型的属性。';
+          lyh_render();
+          lyh_showCode(code, desc);
+          return;
+        }
+
+        lyh_render();
+        lyh_showCode(code, desc);
+      }
+
+      lyh_render();
+    })();
+  </script>
+</body>
+</html>
